@@ -11,4 +11,3 @@ Creation of a loan repayment prediction model of customers (loyal and newcomers)
 - [Features](#features)
 - [Sponsors 🏆](#sponsors)
 
-<h2 id="install">Installations</h2>
