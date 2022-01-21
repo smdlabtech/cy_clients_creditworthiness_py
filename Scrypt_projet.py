@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-APPLICATION : PROJET DE PYTHON 
-
-@author: SYLLA Mamadou Daya
-         DJRAMEDO Chris 
-         YUZUAK Ali 
+APPLICATION : Projet de Python 
+@author: Daya
+         Chris 
+         Ali 
 """
 
 ######################################
