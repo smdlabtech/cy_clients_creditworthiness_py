@@ -1,5 +1,4 @@
-# Predicting the creditworthiness of a bank's customers
-
+# Predicting the creditworthiness of a bank's customers  
 - Predicting the creditworthiness of a bank's customers
 - Classification of customers according to their creditworthiness
 - Distinguishing customers according to their credit risk Building a credit risk score
