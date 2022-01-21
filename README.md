@@ -1,4 +1,4 @@
-# prediction_of_customer_creditability
+# Predicting the creditworthiness of a bank's customers
 
 - Predicting the creditworthiness of a bank's customers
 - Classification of customers according to their creditworthiness
