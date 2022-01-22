@@ -1,4 +1,4 @@
-# Predicting the creditworthiness of a bank's customers   
+# Prédiction de la solvabilité des clients d'une banque
 - Prévision de la solvabilité des clients d'une banque
 - Classification des clients en fonction de leur solvabilité
 - Distinction des clients en fonction de leur risque de crédit Création d'un score de risque de crédit
