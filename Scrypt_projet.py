@@ -42,7 +42,7 @@ import matplotlib.pyplot as plt
 ### Chargement de la base de données ######
 chdir(r"C:\Users\carrel\Downloads\Projet")   # work directory
 pd.set_option('display.max_column', 12)
-dfp = pd.read_sas(r"C:\Users\carrel\Downloads\Projet/Tab2.sas7bdat")
+dfp = pd.read_sas(r"C:\Users\carrel\Downloads\Projet\Tab2.sas7bdat")
 
 ####
 # 1)
