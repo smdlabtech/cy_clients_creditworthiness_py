@@ -44,8 +44,8 @@ chdir(r"C:\Users\carrel\Downloads\Projet")   # work directory
 pd.set_option('display.max_column', 12)
 dfp = pd.read_sas(r"C:\Users\carrel\Downloads\Projet/Tab2.sas7bdat")
 
-
-#1)
+####
+# 1)
 # Renommage des variables
 dfp.rename(columns={'varA': 'Incident_r', 'varB': 'Montant_pret', 'varC': 'Montant_hypotheque',
 'varD': 'Val_propriete','varE': 'Motif_pret','varF': 'Profession',
@@ -53,22 +53,21 @@ dfp.rename(columns={'varA': 'Incident_r', 'varB': 'Montant_pret', 'varC': 'Monta
 'varJ': 'Age_cred','varK': 'Nb_demandes_cred','varL': 'Ratio_dette_revenu'}, inplace=True)
 print(dfp)
 
-
 dfp.shape       #(Nb_ligne, Nb_col)
 dfp.dtypes      #(Types des variables)
 
-#compte le nombre d'occurence de la variable Incident_r à prédire
+#compter le nombre d'occurence de la variable Incident_r à prédire
 dfp["Incident_r"].value_counts(dropna = False)
 
-#compte le nombre d'occurence des variables qualitatives
+#compter le nombre d'occurence des variables qualitatives
 dfp["Motif_pret"].value_counts(dropna = False)
 dfp["Profession"].value_counts(dropna = False)
 
-## Conversion de l'age_cred den annees
+## Conversion de l'age_cred en annees
 dfp['Age_cred'] = round(dfp['Age_cred'] /12 ,2)
 dfp.describe(include="all")
 
-# variables qualitatives
+# variables qualitatives (Calcul des fréquences des modalités)
 for col in dfp.select_dtypes('object'):
     print(f'{col :-<30} {dfp[col].unique()}')
 
@@ -76,9 +75,9 @@ for col in dfp.select_dtypes('object'):
     plt.figure()
     dfp[col].value_counts().plot.pie()
 
-########## Semble pas utile pour le moment ###########
+######################################################
 ### Mise en forme des variables des variables avant le 
-### lancement de la matrice de correlation
+### Lancement de la matrice de correlation
 
 sns.countplot(x='Montant_pret', hue='Incident_r', data=dfp)
 sns.countplot(x='Ratio_dette_revenu', hue='Incident_r', data=dfp)
@@ -113,8 +112,8 @@ plt.ylabel('val. manquantes (%)')
 plt.subplots_adjust(bottom=0.4,top=0.99)
 plt.show()
 
-#################################
-# DETECTER DES VALEURS ABERRANTES
+###################################
+# DETECTION DES VALEURS ABERRANTES
 # Histogramme des variables continues 
 for col in dfp.select_dtypes('float'):
    plt.figure()
@@ -137,8 +136,8 @@ dfp.boxplot(column='Montant_pret') # >55000
 dfp.boxplot(column='Montant_hypotheque') # 270000
 
 
-##############################################
-#TRAITEMENT : VALEURS MANQUANTES ET ABBERABTES
+###############################################
+#TRAITEMENT : VALEURS MANQUANTES ET ABBERANTES
 
 ##Statistiques desc avant imputation des var qualitatives
 cat_var_avant=dfp[['Motif_pret', 'Profession']]
@@ -176,7 +175,6 @@ quant_var = dfp[['Incident_r', 'Montant_pret', 'Montant_hypotheque', 'Val_propri
 
 
 # Transformation des valeurs abberantes en manquantes 
-
 u=quant_var.Ratio_dette_revenu
 for i in range(len(u)): 
  if u[i] > 75 or u[i] < 17 : u[i]= 'NaN'
@@ -204,7 +202,6 @@ for i in range(len(u)):
  
  
 # IDéfinition d'une fonction pour choisir le k-optimal 
-
 rmse = lambda y, yhat: np.sqrt(mean_squared_error(y, yhat))
 
 def optimize_k (data, target):
@@ -271,7 +268,7 @@ dfp2.head()
 
 
 ################################################################
-# 					 MODELISATION  
+# 		     MODELISATION  
 ################################################################
 
 # SEPARATION DE la variable DEPENDANTE (Y) DES EXPLICATIVES (X)
@@ -294,10 +291,10 @@ print(X_app.shape, X_test.shape, Y_app.shape, Y_test.shape)
 ## Echantillon Test: 20 %
 
 
-##########################################
-# 	MODELE DE REGRESSION LOGISTIQUE 
-##########################################
-# on importe LogisticRegression 
+################################################
+# 	1 : MODELE DE REGRESSION LOGISTIQUE 
+################################################
+# On importe LogisticRegression depuis sklearn
 from sklearn.linear_model import LogisticRegression
 logit = LogisticRegression()
 modele = logit.fit(X_app,Y_app) # construction du modele sur l'´echantillon d'apprentissage
@@ -318,9 +315,9 @@ print(err)
 
 
 ##########################################
-#            MODELE DE k-NN
+#          2 : MODELE DE k-NN
 ##########################################
-# Importation du package 
+# Importation du package depuis sklearn
 import sklearn
 from sklearn import neighbors, metrics
 
@@ -362,10 +359,10 @@ plt.matshow(mat_conf)
 ## taux_erre=0.206
 
 
-##########################################
-# 		MODELE D'ARBRE DE DECISION 
-##########################################
-
+#####################################################
+#          3 : MODELE D'ARBRE DE DECISION 
+#####################################################
+# Importation du package depuis sklearn
 from sklearn.tree import DecisionTreeClassifier
 dtree = DecisionTreeClassifier(min_samples_split=5) 
 
@@ -393,11 +390,10 @@ graph.write_png("Incident.png")
 #L’arbre est généré dans un fichier image ainsi qu'un pdf à visualiser pour se rende compte 
  
 
-
-##########################################
-# 			RANDOME FOREST
-##########################################
-
+######################################################
+# 	       4 : RANDOM FOREST
+######################################################
+# Importation du package depuis sklearn
 from sklearn.ensemble import RandomForestClassifier
 
 #définition des paramètres 
@@ -420,13 +416,12 @@ print(mat_conf)
 
 
 
-##########################################
-# 				SCORING 
-##########################################
-# obtenir les scores 
+###############################################
+# 	             SCORING 
+###############################################
+# Création des scores 
 
 modele = logit.fit(X_app,Y_app) 
-
 probas = logit.predict_proba(X_test) #calcul des probabilités d'affectation sur l'´echantillon test
 
 #score de "Incident"
@@ -438,7 +433,7 @@ Grille100 = round(100*(score[0]+max(score[0]))/(min(score[0])+max(score[0])),2)
 
 max(score)
 
-##################################"
+####################################
 # prediction sur l'échantilllon test 
 Y_pred = modele.predict(X_test) # prediction sur l'´echantillon test
 
