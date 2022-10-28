@@ -1,4 +1,5 @@
 # Prédiction de la solvabilité des clients d'une banque
+Les points clés de cette étude se façon suivantes :  
 - Classification des clients en fonction de leur solvabilité
 - Distinction des clients en fonction des risques de crédit
 - Construction d'un nouveau score de risque pour améliorer sa stratégie d'attribution de crédit
