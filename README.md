@@ -4,3 +4,13 @@
 - Construction d'un nouveau score de risque pour améliorer sa stratégie d'attribution de crédit
 - Amélioration de la stratégie de fidélisation des clients
 - Création d'un modèle de prédiction de remboursement de prêts des clients (fidèles et nouveaux arrivants)
+
+# Objectifs pratiques
+L’objectif principal de notre travail est de prédire la solvabilité des clients d’une banque. Il s’agira
+donc de distinguer notre population de recherche (clients) en fonction du risque de crédit, c’est-à-
+dire de classer les clients solvables et les clients peu fiables. Deuxièmement, nous devons développer
+un score de risque à attribuer aux nouveaux clients et aux demandeurs de prêt, ce qui permettra
+à la banque de leur octroyer des prêts sur la base
+— i) du score
+— ii) des ressources disponibles de la banque.
+Par conséquent, notre unité statistique est la clientèle de la banque
