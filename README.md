@@ -19,7 +19,7 @@ Il faudra développer un score de risque à attribuer aux nouveaux clients et au
 Pour lancer une application streamlit en local, il faudra appliquer les étapes suivantes :
 
 
-- Ouvrir un terminal dans l'endroit contenant le script *"code.py"*  
+- Ouvrir un terminal dans l'endroit contenant le script *"Script_projet.py"*  
 - Puis saisir depuis le terminal la commande suivante :
 
 ```python
