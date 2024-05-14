@@ -1,0 +1,63 @@
+
+#---------------------------------------------------------------------------------------------------------#
+# 			PROMPT for creating the ML streamlit application
+#---------------------------------------------------------------------------------------------------------#
+
+    Import the necessary libraries.
+    Load the dataset from a SAS file.
+    Rename the DataFrame columns for better readability.
+    Display the shape and data types of the DataFrame.
+
+    Count occurrences of certain variables.
+    Convert credit age to years.
+    Display frequencies of categories for qualitative variables.
+    Visualize qualitative variables using pie charts.
+    Visualize the relationship between different variables and the 'Incident_r' variable using bar charts.
+    Search for and count missing values in the DataFrame.
+    Calculate percentage of missing values for each variable.
+    Visualize percentage of missing values using a histogram.
+    Detect outliers using box plots.
+    Display descriptive statistics before imputing missing values.
+
+The script is well-organized and commented, which facilitates understanding what each part of the code does.
+
+    Outlier detection.
+    Add frequency of missing values.
+    Use the K-NN Neighbors method to impute missing quantitative values.
+    And the statistical 'mode' value for qualitative variables.
+    (Provides a vision before and after imputation)
+
+    Perform one-hot encoding for qualitative variables
+    The correlation matrix
+    Analyze correlations
+
+    Display box plots for each numeric variable, which can help detect outliers.
+    Display frequency of missing values.
+    Impute missing values using the K-NN method for numeric variables and the mode for categorical variables.
+    Transform categorical variables into indicator variables (one-hot encoding).
+    Display a correlation matrix.
+    Analyze correlations between the 'Incident_r' variable and all other variables.
+
+    Model estimations, we will test 3 models
+
+    K-NN,
+    Decision Tree,
+    Logistic Regression
+    Random Forest
+
+For each model, we will calculate:
+    The correlation matrix
+    The error rate
+    Precision, recall, and sensitivity
+    Accuracy
+
+    Compare the best model using performance measures:
+
+    Error rate
+    Precision, accuracy, recall, and sensitivity
+
+    Choose the best model based on the best performance
+
+    Make predictions or scoring
+    Add an interpretation of the best model
+    Knowing that the best model is the one that minimizes the error rate, maximizes precision, and has better accuracy.
