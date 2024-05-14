@@ -61,9 +61,7 @@ Pour constituer notre repo :
 **NB** : Normalement lors de la création de l'environnement virtuel, il y a eu un fichier .gitignore (txt) qui a été créé. Il faudra rajouter la commande suivante dans de fichier :  
 
 # Exemple de contenu pour.gitignore  
-```
-venv/ 
-```  
+```venv/```  
 Donc le fait d'ajouter dans le gitignore ce bout de code précédent permet de pouvoir intégré le .venv dans le repo.
 
 **5**- Activez l'environnement virtuel : Activez l'environnement virtuel en utilisant la commande appropriée selon votre système d'exploitation.
