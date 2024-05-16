@@ -53,10 +53,11 @@ def main():
     'varG': 'Nb_annees_travail','varH': 'Nb_report_pret', 'varI': 'Nb_litiges',
     'varJ': 'Age_cred','varK': 'Nb_demandes_cred','varL': 'Ratio_dette_revenu'}, inplace=True)
     
-    st.subheader('Descriptive Statistics : ')
     if st.checkbox('Show dataframe after columns renamed'):
         st.write(dfp)
     
+    
+    st.subheader('Descriptive Statistics : ')
     if st.checkbox('Show shape'):
         st.write(dfp.shape)
 
@@ -85,7 +86,7 @@ def main():
         sns.countplot(x='Montant_pret', hue='Incident_r', data=dfp)
         st.pyplot()
 
-    ## ---
+    ## -------------------------------------
     # if st.checkbox('Show missing values'):
     #     st.write(dfp.isna().any())
     #     st.write(dfp.isna().sum())
@@ -136,19 +137,6 @@ def main():
         st.subheader('Missing Values Frequency')
         missing_values_freq = dfp.isnull().sum() / len(dfp)
         st.write(missing_values_freq)
-        
-    # if st.checkbox('Show missing values frequency'):
-    #     col1, col2 = st.beta_columns(2)
-
-    #     with col1:
-    #         st.subheader('Missing Values Frequency')
-
-    #     with col2:
-    #         # Ajoutez ici le code pour l'autre colonne
-    #         missing_values_freq = dfp.isnull().sum() / len(dfp)
-    #         st.write(missing_values_freq)
-
-
 
     # Catching missing variables containing missing values
     if st.checkbox('Impute missing values'):
@@ -230,10 +218,9 @@ def main():
     #------------------------------------------#
     # MODELIZATION : Train and evaluate models
      #-----------------------------------------#
-    
+     
+    st.subheader('Training and Evaluating Models')
     if st.checkbox('Train and evaluate models'):
-        st.subheader('Training and Evaluating Models')
-        
         # Variable to predict (Or for SCORING ANALYSIS)
         # Separations between predictor and predicted variables.
         X = dfp.drop('Incident_r', axis=1)
@@ -255,29 +242,47 @@ def main():
         for name, model in models.items():
             model.fit(X_train, y_train)
             y_pred = model.predict(X_test)
-            st.write(f'Model: {name}')
-            st.write('Confusion matrix:')
-            st.write(confusion_matrix(y_test, y_pred))
-            st.write('Error rate:', 1 - accuracy_score(y_test, y_pred))
-            st.write('Precision:', precision_score(y_test, y_pred))
-            st.write('Recall:', recall_score(y_test, y_pred))
-            st.write('F1 score:', f1_score(y_test, y_pred))
-            st.write('Accuracy:', accuracy_score(y_test, y_pred))
+            
+            # st.write(f'Model: {name}')
+            # st.write('Confusion matrix:')
+            # st.write(confusion_matrix(y_test, y_pred))
+            # st.write('Error rate:', 1 - accuracy_score(y_test, y_pred))
+            # st.write('Precision:', precision_score(y_test, y_pred))
+            # st.write('Recall:', recall_score(y_test, y_pred))
+            # st.write('F1 score:', f1_score(y_test, y_pred))
+            # st.write('Accuracy:', accuracy_score(y_test, y_pred))
+            
+
+            # Create a DataFrame for the model results
+            model_results = pd.DataFrame({
+                'Model': [name],
+                'Confusion matrix': [confusion_matrix(y_test, y_pred)],
+                'Error rate': [1 - accuracy_score(y_test, y_pred)],
+                'Precision': [precision_score(y_test, y_pred)],
+                'Recall': [recall_score(y_test, y_pred)],
+                'F1 score': [f1_score(y_test, y_pred)],
+                'Accuracy': [accuracy_score(y_test, y_pred)]
+            })
+
+            # Display the DataFrame as a table in Streamlit
+            st.table(model_results)
+        
         
         ## Features importances  ##
+        st.subheader('Features importances : ')
         if name in ['Decision Tree', 'Random Forest']:
             st.write('Feature importances:')
             feature_importances = pd.Series(model.feature_importances_, index=X.columns)
             st.write(feature_importances.sort_values(ascending=False))
     
-        #-----------------------------#
+        #---------------------------------------------------------------------------------------#
         # REMAINS TO DO
         
         # Models comparisons
         # Explain models features importances
         # Improve model performance by using only those variables that best explain the models
         # 
-        #-----------------------------#
+        #---------------------------------------------------------------------------------------#
         
         
     #------------------------------------------#
@@ -288,5 +293,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
     
