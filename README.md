@@ -35,8 +35,8 @@ Voici le schéma du repo :
 	|-- /Include
 	|   |-- Script_projet.py
 	|   |-- app.py
-	|-- /Scripts
 	|-- /Lib
+	|-- /Scripts
 |-- /data
 |-- /docs
 |-- /archives
