@@ -34,6 +34,7 @@ Voici le schéma du repo :
 |-- /.venv
 	|-- /Include
 	|   |-- Script_projet.py
+	|   |-- app.py
 	|-- /Scripts
 	|-- /Lib
 |-- /data
