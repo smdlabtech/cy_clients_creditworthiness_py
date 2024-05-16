@@ -1,6 +1,8 @@
 
 #---------------------------------------------------------------------#
 # 			PROMPT de création de l'application streamlit
+#
+#           La démarche à suivre pour créer l'application (ML)
 #---------------------------------------------------------------------#
 
 Voici une brève description de ce que fait chaque partie du script :

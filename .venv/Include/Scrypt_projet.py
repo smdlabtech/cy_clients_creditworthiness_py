@@ -430,11 +430,13 @@ print(score)
 
 score2 = sorted(score, reverse=True)
 Grille100 = round(100*(score[0]+max(score[0]))/(min(score[0])+max(score[0])),2)
-
 max(score)
+
 
 ####################################
 # prediction sur l'échantilllon test 
+#------------------------------------
+
 Y_pred = modele.predict(X_test) # prediction sur l'´echantillon test
 
 def my_custom_loss_func(y_true, y_pred):
@@ -470,7 +472,7 @@ from sklearn import model_selection
 parametres=[{'C':[0.1,1,10],'kernel':['rbf','linear']}]
 grid=model_selection.GridSearchCV(estimator=mvs,param_grid=parametres,scoring='accuracy')
 grille=grid.fit(X_app,Y_app)
-print(pandas.Dataframe.from_dict(grille.cv_results_).loc[:,["params","mean_test_score"]])
+print(pd.Dataframe.from_dict(grille.cv_results_).loc[:,["params","mean_test_score"]])
 print(grille.best_params_)
 print(grille.best_score_)
 y_pred3=grille.predict(X_test)
