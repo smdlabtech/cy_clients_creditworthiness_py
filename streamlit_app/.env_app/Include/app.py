@@ -11,7 +11,7 @@ import pylab as pl
 
 
 # import mod_styles_app as style_app
-import mod_styles_app as styles_app  ## Module local créer pour le style de l'application
+import styles_app as styles_app  ## Module local créer pour le style de l'application
 from sklearn.impute import KNNImputer
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
@@ -42,9 +42,12 @@ def load_data():
     dfp = pd.read_sas(data_file)
     return dfp
 
+
 # MAIN FUNCTION
 def main():
-    st.title("Predicting the creditworthiness of a bank's customers")
+    # st.title("Predicting the creditworthiness of a bank's customers")
+    st.markdown("<h1 style='text-align: center; color: grey;'>Predicting the Creditworthiness of Bank Customers</h1>", unsafe_allow_html=True)
+    
     dfp = load_data()
 
 
@@ -52,24 +55,20 @@ def main():
     # 1. Data Explorations
     #---------------------------------------------------------------#
     
-
     # Créer la sidebar
     sidebar = st.sidebar
-
-    # # Ajouter des éléments dans la sidebar
-    # sidebar.header("Side Panel (filters & methods) : ")
-
+    
     # Ajouter un grand titre dans la sidebar
     # sidebar.title("Sidebar Panel : ")
 
     # Ajouter un titre stylisé dans la sidebar
-    sidebar.markdown("<h1 style='text-align: left; color: blue;'>Sidebar Panel (filters): </h1>", unsafe_allow_html=True)
+    sidebar.markdown("<h1 style='text-align: left; color: grey;'>Sidebar Panel : </h1>", unsafe_allow_html=True)
 
     #---------------------------#
     # Insertion de style CSS
     
-    css_content = styles_app.input_css("style.css")
-    st.markdown(f"<style>{css_content}</style>", unsafe_allow_html=True)
+    css_header = styles_app.input_css("style.css")
+    st.markdown(f"<style>{css_header}</style>", unsafe_allow_html=True)
     st.markdown("""
     <div class="container">
         <div class="header">Titre du Conteneur</div>
@@ -83,7 +82,6 @@ def main():
     
     
     sidebar.subheader('Load Data')
-    
     st.subheader('Variables Renaming : ')
     if st.sidebar.checkbox('data'):
         st.write("data :")
@@ -242,33 +240,42 @@ def main():
         st.write(y_test)
         
         
-        #---------------------------------------------#
-        # MODELS EXPLANATIONS
-        #----------------------------------------------#
-        # Add a markdown area for the model explanations
-        st.subheader('Reminder of models definitions : ') 
-        # st.subheader('A few reminders : ') 
-    
-        model_explanations = """
-        K-NN (K-Nearest Neighbors) :
-        Avantages :
-        - Simple à comprendre et à mettre en œuvre.
-        - Pas besoin de faire des hypothèses sur la distribution des données, ce qui le rend utile pour les données non linéaires.
-        - Le modèle ne nécessite pas d'entraînement, ce qui peut rendre l'apprentissage rapide.
-        Inconvénients :
-        - Le temps de prédiction peut être lent pour les grands ensembles de données.
-        - Sensible aux variables non pertinentes et à l'échelle des données.
-        - Il ne fournit pas d'informations sur l'importance des caractéristiques.
-        ...
-        """
-        st.markdown(model_explanations)
-    
-    
     #------------------------------------------#
     # MODELIZATION : Train and evaluate models
-     #-----------------------------------------#
-    sidebar.subheader('MODELIZATION : ')
-    st.subheader('Training and Evaluating Models')
+    #-----------------------------------------#
+    sidebar.subheader('Modelization : ')
+    
+    
+    # MODELS EXPLANATIONS
+    
+    # Add a markdown area for the model explanations
+    st.subheader('Reminder of models definitions') 
+    
+    #------------------------------------------------------------------------------------------------------------------------
+    css_remind_def = styles_app.input_css("style.css")
+    st.markdown(f"<style>{css_remind_def}</style>", unsafe_allow_html=True)
+    st.markdown("""
+    <div class="container">
+        <div class="header">K-NN (K-Nearest Neighbors) : </div>
+        <div class="content">
+            <br>• Easy to understand and implement.
+            <br>• No need to make assumptions about the distribution of data, making it useful for nonlinear data.
+            <br>• The model does not require training, which can make learning fast.
+            <br>Inconveniences:
+            <br>• Prediction time may be slow for large datasets.
+            <br>• Sensitive to irrelevant variables and the scale of data.
+            <br>• It does not provide information on the importance of features.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    #------------------------------------------------------------------------------------------------------------------------
+    
+    
+
+    ## TRAINING AND EVALUATING MODELS
+    
+    st.subheader('Training and Evaluating Models : ')
     if st.sidebar.checkbox('Train and evaluate models'):
         # Variable to predict (Or for SCORING ANALYSIS)
         # Separations between predictor and predicted variables.
@@ -292,7 +299,9 @@ def main():
             model.fit(X_train, y_train)
             y_pred = model.predict(X_test)
             
-            # st.write(f'Model: {name}')
+            #--------------------------------------------------------------------------------#
+            # # st.write(f'Model: {name}')
+            # st.write(f'**Model:** {name}')  # Utilisation de ** pour rendre le texte en gras
             # st.write('Confusion matrix:')
             # st.write(confusion_matrix(y_test, y_pred))
             # st.write('Error rate:', 1 - accuracy_score(y_test, y_pred))
@@ -300,21 +309,39 @@ def main():
             # st.write('Recall:', recall_score(y_test, y_pred))
             # st.write('F1 score:', f1_score(y_test, y_pred))
             # st.write('Accuracy:', accuracy_score(y_test, y_pred))
+            #--------------------------------------------------------------------------------#
             
+            # Utilisation de st.markdown pour insérer du HTML avec le style CSS
+            st.markdown(f"""
+            <div class="container">
+                <div class="header">{name}</div>
+                <div class="content">
+                    Error rate: {1 - accuracy_score(y_test, y_pred)}<br>
+                    Precision: {precision_score(y_test, y_pred)}<br>
+                    Recall: {recall_score(y_test, y_pred)}<br>
+                    F1 score: {f1_score(y_test, y_pred)}<br>
+                    Accuracy: {accuracy_score(y_test, y_pred)}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+                
+            st.write('Confusion matrix:')
+            st.write(confusion_matrix(y_test, y_pred))
+        
 
-            # Create a DataFrame for the model results
-            model_results = pd.DataFrame({
-                'Model': [name],
-                'Confusion matrix': [confusion_matrix(y_test, y_pred)],
-                'Error rate': [1 - accuracy_score(y_test, y_pred)],
-                'Precision': [precision_score(y_test, y_pred)],
-                'Recall': [recall_score(y_test, y_pred)],
-                'F1 score': [f1_score(y_test, y_pred)],
-                'Accuracy': [accuracy_score(y_test, y_pred)]
-            })
+            # # Create a DataFrame for the model results
+            # model_results = pd.DataFrame({
+            #     'Model': [name],
+            #     'Confusion matrix': [confusion_matrix(y_test, y_pred)],
+            #     'Error rate': [1 - accuracy_score(y_test, y_pred)],
+            #     'Precision': [precision_score(y_test, y_pred)],
+            #     'Recall': [recall_score(y_test, y_pred)],
+            #     'F1 score': [f1_score(y_test, y_pred)],
+            #     'Accuracy': [accuracy_score(y_test, y_pred)]
+            # })
 
-            # Display the DataFrame as a table in Streamlit
-            st.table(model_results)
+            # # Display the DataFrame as a table in Streamlit
+            # st.table(model_results)
         
         
         ## Features importances  ##
@@ -325,19 +352,22 @@ def main():
             feature_importances = pd.Series(model.feature_importances_, index=X.columns)
             st.write(feature_importances.sort_values(ascending=False))
     
-        #---------------------------------------------------------------------------------------#
-        # REMAINS TO DO
-        
-        # Models comparisons
-        # Explain models features importances
-        # Improve model performance by using only those variables that best explain the models
-        # 
-        #---------------------------------------------------------------------------------------#
-        
         
     #------------------------------------------#
+    # MODELS : (Comparisons)
+    #-----------------------------------------#
+    # Select the best model
+    # Explain models features importances
+    
+    
+    #-------------------------------------------------------------------------------------------------#
+    # TUNINGS : (Improve model performance by using only those variables that best explain the models)
+    #-------------------------------------------------------------------------------------------------#
+    # Improve model performance by using only those variables that best explain the models
+
+    #------------------------------------------#
     # SCORING : (Predictions)
-     #-----------------------------------------#
+    #-----------------------------------------#
         
 
 
