@@ -69,7 +69,7 @@ Donc le fait d'ajouter dans le gitignore ce bout de code précédent permet de p
 ```.\.venv\Scripts\activate``` et pour désactiver l'environnement :    
 ```.\.venv\Scripts\Deactivate```    
 
-Et enfin, quand la MAJ du code python est terminée, vous pourrez créez le fichier de ```requirements.txt``` avec les commandes suivantes :  
+Et enfin, quand la **MAJ** du code **python** est terminée, vous pourrez créez le fichier de ```requirements.txt``` avec les commandes suivantes :  
 
 ```pip freeze > requirements.txt```    
 ```git add requirements.txt```    
