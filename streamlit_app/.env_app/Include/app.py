@@ -24,6 +24,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
 
+
+
 # LOAD DATASET
 def load_data():
     # Chemin du répertoire courant
@@ -43,52 +45,63 @@ def load_data():
     return dfp
 
 
+#--------------#
 # MAIN FUNCTION
+#--------------#
 def main():
+    
+    #---------------------------------#
+    # Set PAGE configuration
+    #---------------------------------#
+    
+    # Tuto :
+    # https://www.youtube.com/watch?v=nnmBdpvN6u8
+    
+
+    
+    st.set_page_config(
+        page_title="Creditworthiness",
+        # page_icon=":rocket:",  # Peut être un emoji ou un chemin vers un fichier d'image
+        page_icon="🏦",  # Emoji représentant une banque
+        layout="wide",
+        initial_sidebar_state="expanded",
+        menu_items={
+            'Get Help': 'https://www.example.com/help',
+            'Report a bug': 'https://www.example.com/bug',
+            'About': "# This is a header. This is an *extremely* cool app!"
+        }
+        
+    )
+
+    st.title("Welcome to My Streamlit App")
+    st.sidebar.header("Sidebar Content")
+
+    
+    
     # st.title("Predicting the creditworthiness of a bank's customers")
     st.markdown("<h1 style='text-align: center; color: grey;'>Predicting the Creditworthiness of Bank Customers</h1>", unsafe_allow_html=True)
     
-    dfp = load_data()
-
 
     ### Initialisation des paramètres de mise en forme :
     sidebar = st.sidebar
     block = st.container()
 
+    ##st.set_page_config(page_icon="🚀")
 
 
-    #---------------------------------------------------------------#
-    # 1. Data Explorations
-    #---------------------------------------------------------------#
-    
     # Ajouter un grand titre dans la sidebar
     # sidebar.title("Sidebar Panel : ")
 
     # Ajouter un titre stylisé dans la sidebar
     sidebar.markdown("<h1 style='text-align: left; color: grey;'>Sidebar Panel : </h1>", unsafe_allow_html=True)
 
-
-    # ## Load Data ---
-    # st.subheader('Load Data : ')
-    # with st.expander("**Preview [Load Data]**"):
-    #     sidebar.subheader('Load Data')
-    #     ##st.subheader('Variables Renaming : ')
-    #     if st.sidebar.checkbox('data'):
-    #         st.write("data [raw] :")
-    #         st.write(dfp)
-
-    #     dfp.rename(columns={'varA': 'Incident_r', 'varB': 'Montant_pret', 'varC': 'Montant_hypotheque',
-    #     'varD': 'Val_propriete','varE': 'Motif_pret','varF': 'Profession',
-    #     'varG': 'Nb_annees_travail','varH': 'Nb_report_pret', 'varI': 'Nb_litiges',
-    #     'varJ': 'Age_cred','varK': 'Nb_demandes_cred','varL': 'Ratio_dette_revenu'}, inplace=True)
-        
-    #     if st.sidebar.checkbox('data after columns renamed'):
-    #         st.write("data [renamed columns] :")
-    #         st.write(dfp)
             
-            
-            
-    ## Load Data ---
+    #------------------#
+    ## 0. Load Data ---#
+    # with st.spinner("Loading data"): ## (Indent code)
+    dfp = load_data()
+    
+    # with st.echo('below') : ## Affichage du code
     st.subheader('Load Data : ')
     st.sidebar.subheader('Load Data')  # Modification ici pour utiliser st.sidebar.subheader
     with st.expander("**Preview [Load Data]**"):
@@ -101,6 +114,7 @@ def main():
                     data_after_columns_renamed = st.checkbox('Ranemmed columns')
 
             # Afficher les données brutes
+        # with st.echo('below') : 
             if show_raw_data:
                 st.write("Raw data :")
                 st.write(dfp)
@@ -117,12 +131,13 @@ def main():
             if data_after_columns_renamed:
                 st.write("Data [renamed columns] :")
                 st.write(dfp)
-    
+                st.success("Success !")  # Message de succès
+                
             
-            
-            
-            
-
+           
+    #---------------------------#
+    # 1. Descriptive Statistics
+     
     # Section for Descriptive Statistics
     st.subheader('Descriptive Statistics : ')
     with st.expander("**Preview [Descriptive Statistics]**"):
@@ -154,7 +169,7 @@ def main():
 
 
 
-    
+    #-----------------------------#
     # Section for Data Explorations
     st.subheader('Data Explorations : ')
     with st.expander("**Preview [Data Explorations]**"):
@@ -446,5 +461,6 @@ def main():
 
 
 if __name__ == "__main__":
+    # st.set_page_config()
     main()
     
