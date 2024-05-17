@@ -1,0 +1,66 @@
+
+#---------------------------------------------------------------------#
+# 			PROMPT de création de l'application streamlit
+#
+#           La démarche à suivre pour créer l'application (ML)
+#---------------------------------------------------------------------#
+
+Voici une brève description de ce que fait chaque partie du script :
+
+1- Importation des bibliothèques nécessaires.
+2- Chargement du jeu de données à partir d'un fichier SAS.
+3- Renommage des colonnes du DataFrame pour une meilleure lisibilité.
+4- Affichage de la forme et des types de données du DataFrame.
+5- Comptage des occurrences de certaines variables.
+6- Conversion de l'âge du crédit en années.
+7- Affichage des fréquences des modalités pour les variables qualitatives.
+8- Visualisation des variables qualitatives à l'aide de graphiques à secteurs.
+9- Visualisation de la relation entre différentes variables et la variable 'Incident_r' à l'aide de graphiques à barres.
+10- Recherche et comptage des valeurs manquantes dans le DataFrame.
+11- Calcul du pourcentage de valeurs manquantes pour chaque variable.
+12- Visualisation du pourcentage de valeurs manquantes à l'aide d'un histogramme.
+13- Détection des valeurs aberrantes à l'aide de diagrammes en boîte.
+14- Affichage des statistiques descriptives avant l'imputation des valeurs manquantes.
+
+
+Le script est bien organisé et commenté, ce qui facilite la compréhension de ce que fait chaque partie du code.
+- La détection de valeurs aberrantes (outlier detection). 
+- Ajoute la fréquence des valeurs manquantes. 
+- Utilise la méthode K-NN Neightbors pour faire l'imputation des valeurs manquantes quantitatives. 
+- Et la valeur statistique 'le mode' pour les variables qualitatives. 
+- (Proppose une vision avant imputation et après imputation)
+
+
+15- Fais la transformation en one-hot-dummies pour les variables qualitatives 16- La matrice de corrélation 17- Analyse les corrélations
+- Afficher des diagrammes en boîte pour chaque variable numérique, ce qui peut aider à détecter les valeurs aberrantes.
+- Afficher la fréquence des valeurs manquantes.
+- Imputer les valeurs manquantes en utilisant la méthode K-NN pour les variables numériques et le mode pour les variables catégorielles.
+- Transformer les variables catégorielles en variables indicatrices (one-hot encoding).
+- Afficher une matrice de corrélation.
+- Analyser les corrélations entre la variable 'Incident_r' et toutes les autres variables.
+
+
+
+19- Estimations des models, nous allons tester 3 models
+- K-NN, 
+- Arbre de décision (Decision Tree), 
+- Régression Logistique (Logistic regression)
+- Forêts Aléatoire (Random Forest)
+
+Pour chaque model, nous allons calculer : 
+- la matrice de corrélation 
+- le taux d'erreur
+- la précision, recall et la sensibilité (ou sensitivity)
+- l'accuracy
+
+
+
+20- Faire la comparaison du meilleur model en utilisant les mesures de performances :
+- taux d'erreur
+- la précision, l'accuracy, le recall et la sensibilité
+
+
+21- Choisir le meilleur model suivant les meilleurs performances
+- Faire la prediction ou le scoring
+- Ajoute une interprétation du meilleur model
+Sachant que le meilleur model est celui qui minimise le taux d'erreur, qui maxise la précision et qui a un meilleur accuracy
