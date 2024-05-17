@@ -1,9 +1,41 @@
-
-/* styles.css */
+/* style.css */
 body {
-    background-color: #f0f0f0;
+    background-color: #f0f2f6;
+    font-family: Arial, sans-serif;
 }
 
 h1 {
     font-family: Arial, sans-serif;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+}
+
+.header {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.content {
+    font-size: 16px;
+    color: #666;
+}
+
+.sidebar .sidebar-content {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: grey;
 }
