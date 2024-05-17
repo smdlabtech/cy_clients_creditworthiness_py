@@ -51,12 +51,15 @@ def main():
     dfp = load_data()
 
 
+    ### Initialisation des paramètres de mise en forme :
+    sidebar = st.sidebar
+    block = st.container()
+
+
+
     #---------------------------------------------------------------#
     # 1. Data Explorations
     #---------------------------------------------------------------#
-    
-    # Créer la sidebar
-    sidebar = st.sidebar
     
     # Ajouter un grand titre dans la sidebar
     # sidebar.title("Sidebar Panel : ")
@@ -64,110 +67,178 @@ def main():
     # Ajouter un titre stylisé dans la sidebar
     sidebar.markdown("<h1 style='text-align: left; color: grey;'>Sidebar Panel : </h1>", unsafe_allow_html=True)
 
-    #---------------------------#
-    # Insertion de style CSS
-    
-    css_header = styles_app.input_css("style.css")
-    st.markdown(f"<style>{css_header}</style>", unsafe_allow_html=True)
-    st.markdown("""
-    <div class="container">
-        <div class="header">Titre du Conteneur</div>
-        <div class="content">
-            Ceci est un exemple de conteneur stylisé en utilisant du CSS dans une application Streamlit...
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    #---------------------------#
 
-    
-    
-    sidebar.subheader('Load Data')
-    st.subheader('Variables Renaming : ')
-    if st.sidebar.checkbox('data'):
-        st.write("data :")
-        st.write(dfp)
+    # ## Load Data ---
+    # st.subheader('Load Data : ')
+    # with st.expander("**Preview [Load Data]**"):
+    #     sidebar.subheader('Load Data')
+    #     ##st.subheader('Variables Renaming : ')
+    #     if st.sidebar.checkbox('data'):
+    #         st.write("data [raw] :")
+    #         st.write(dfp)
 
-    dfp.rename(columns={'varA': 'Incident_r', 'varB': 'Montant_pret', 'varC': 'Montant_hypotheque',
-    'varD': 'Val_propriete','varE': 'Motif_pret','varF': 'Profession',
-    'varG': 'Nb_annees_travail','varH': 'Nb_report_pret', 'varI': 'Nb_litiges',
-    'varJ': 'Age_cred','varK': 'Nb_demandes_cred','varL': 'Ratio_dette_revenu'}, inplace=True)
-    
-    if st.sidebar.checkbox('data after columns renamed'):
-        st.write("data [renamed columns] :")
-        st.write(dfp)
-    
-    sidebar.subheader('Descriptive Statistics')
-    st.subheader('Descriptive Statistics : ')
-    if st.sidebar.checkbox('shape'):
-        st.write("shape :")
-        st.write(dfp.shape)
-
-    if st.sidebar.checkbox('dtypes'):
-        st.write("dtypes :")
-        st.write(dfp.dtypes)
-
-    if st.sidebar.checkbox('value counts'):
-        st.write(dfp["Incident_r"].value_counts(dropna = False))
-        st.write(dfp["Motif_pret"].value_counts(dropna = False))
-        st.write(dfp["Profession"].value_counts(dropna = False))
-
-    dfp['Age_cred'] = round(dfp['Age_cred'] /12 ,2)
-
-
-    sidebar.subheader('Data Explorations')
-    st.subheader('Data Exploration (DE) : ')
-    if st.sidebar.checkbox('descriptions'):
-        st.write(dfp.describe(include="all"))
-
-    if st.sidebar.checkbox('pie charts'):
-        for col in dfp.select_dtypes('object'):
-            st.write(f'{col :-<30} {dfp[col].unique()}')
-            plt.figure()
-            dfp[col].value_counts().plot.pie()
-            st.pyplot()
-
-    if st.sidebar.checkbox('count plots'):
-        sns.countplot(x='Montant_pret', hue='Incident_r', data=dfp)
-        st.pyplot()
-
-    ## -----------------------------------------------------#
-    # if st.sidebar.checkbox('missing values'):
-    #     st.write(dfp.isna().any())
-    #     st.write(dfp.isna().sum())
-
-    if st.sidebar.checkbox('missing values'):
-        col1, col2 = st.columns(2)
+    #     dfp.rename(columns={'varA': 'Incident_r', 'varB': 'Montant_pret', 'varC': 'Montant_hypotheque',
+    #     'varD': 'Val_propriete','varE': 'Motif_pret','varF': 'Profession',
+    #     'varG': 'Nb_annees_travail','varH': 'Nb_report_pret', 'varI': 'Nb_litiges',
+    #     'varJ': 'Age_cred','varK': 'Nb_demandes_cred','varL': 'Ratio_dette_revenu'}, inplace=True)
         
-        with col1:
-            st.subheader('Columns with missing values')
-            st.write(dfp.isna().any())
+    #     if st.sidebar.checkbox('data after columns renamed'):
+    #         st.write("data [renamed columns] :")
+    #         st.write(dfp)
             
-        with col2:
-            st.subheader('Number of missing values')
-            st.write(dfp.isna().sum())
-    #-------------------------------------------------------#
+            
+            
+    ## Load Data ---
+    st.subheader('Load Data : ')
+    st.sidebar.subheader('Load Data')  # Modification ici pour utiliser st.sidebar.subheader
+    with st.expander("**Preview [Load Data]**"):
+        with st.container():
+            with st.sidebar.expander("**(Options)**", expanded=True):  # Modification ici pour utiliser st.sidebar.expander
+                
+                # Créer un conteneur pour les cases à cocher
+                # with st.container():
+                    show_raw_data = st.checkbox('Raw data')
+                    data_after_columns_renamed = st.checkbox('Ranemmed columns')
+
+            # Afficher les données brutes
+            if show_raw_data:
+                st.write("Raw data :")
+                st.write(dfp)
+
+            # Renommer les colonnes
+            dfp.rename(columns={
+                'varA': 'Incident_r', 'varB': 'Montant_pret', 'varC': 'Montant_hypotheque',
+                'varD': 'Val_propriete','varE': 'Motif_pret','varF': 'Profession',
+                'varG': 'Nb_annees_travail','varH': 'Nb_report_pret', 'varI': 'Nb_litiges',
+                'varJ': 'Age_cred','varK': 'Nb_demandes_cred','varL': 'Ratio_dette_revenu'
+            }, inplace=True)
+            
+            # Afficher les données après le renommage des colonnes
+            if data_after_columns_renamed:
+                st.write("Data [renamed columns] :")
+                st.write(dfp)
+    
+            
+            
+            
+            
+
+    # Section for Descriptive Statistics
+    st.subheader('Descriptive Statistics : ')
+    with st.expander("**Preview [Descriptive Statistics]**"):
+        sidebar.subheader('Descriptive Statistics : ')
+        with st.sidebar.expander("**(Options)**", expanded=True):
+            shape = st.checkbox('Shape')
+            dtypes = st.checkbox('Dtypes')
+            value_counts = st.checkbox('Value counts')
+
+        # Display shape of the data
+        if shape:
+            st.write("Shape :")
+            st.write(dfp.shape)
+
+        # Display data types of the columns
+        if dtypes:
+            st.write("Data Types (dtypes) :")
+            st.write(dfp.dtypes)
+
+        # Display value counts for specific columns
+        if value_counts:
+            st.write("Value Counts :")
+            st.write(dfp["Incident_r"].value_counts(dropna=False))
+            st.write(dfp["Motif_pret"].value_counts(dropna=False))
+            st.write(dfp["Profession"].value_counts(dropna=False))
+        
+        # Adjust the 'Age_cred' column
+        dfp['Age_cred'] = round(dfp['Age_cred'] / 12, 2)
 
 
-    if st.sidebar.checkbox('missing values percentage'):
-        dfp_Na=pd.DataFrame({"Pourcentage_Na" : round(dfp.isnull().sum()/(dfp.shape[0])*100,2)})
-        st.write(dfp_Na)
 
-    if st.sidebar.checkbox('box plots'):
-        for col in dfp.select_dtypes('float'):
-            plt.figure()
-            sns.boxplot(dfp[col])
+    
+    # Section for Data Explorations
+    st.subheader('Data Explorations : ')
+    with st.expander("**Preview [Data Explorations]**"):
+        with st.container():
+            sidebar.subheader('Data Explorations')
+
+            # Create adjustable columns for checkboxes
+            with sidebar.expander("**(Options)**", expanded=True):
+                col1, col2 = st.columns(2)
+
+                with col1:
+                    descriptions = st.checkbox('Descriptions')
+                    pie_charts = st.checkbox('Pie charts')
+                    count_plots = st.checkbox('Count plots')
+
+                # with col2:
+                    missing_values = st.checkbox('Missing values')
+                    missing_values_percentage = st.checkbox('Missing values (pctg)')
+                    box_plots = st.checkbox('Box plots')
+                    unique_values = st.checkbox('Unique values')
+                    descriptive_statistics_before_imputation = st.checkbox('Descriptive statistics before imputation')
+
+        # Show data descriptions
+        if descriptions:
+            st.write(dfp.describe(include="all"))
+
+        # Show pie charts for categorical variables
+        if pie_charts:
+            for col in dfp.select_dtypes('object'):
+                st.write(f'{col :-<30} {dfp[col].unique()}')
+                plt.figure()
+                dfp[col].value_counts().plot.pie()
+                st.pyplot()
+
+        # Show count plots
+        if count_plots:
+            sns.countplot(x='Montant_pret', hue='Incident_r', data=dfp)
             st.pyplot()
 
-    if st.sidebar.checkbox('unique values'):
-        for col in dfp.select_dtypes('object'):
-            st.write(f'{col :-<30} {dfp[col].unique()}')
+        # Show missing values information
+        if missing_values:
+            col1, col2 = st.columns(2)
+            with col1:
+                st.subheader('Cols with missing values')
+                st.write(dfp.isna().any())
+            with col2:
+                st.subheader('Number of missing values')
+                st.write(dfp.isna().sum())
 
-    if st.sidebar.checkbox('descriptive statistics before imputation'):
-        cat_var_avant=dfp[['Motif_pret', 'Profession']]
-        st.write(cat_var_avant.describe())
-        st.write(dfp.describe())
-        
+        # Show missing values percentage
+        if missing_values_percentage:
+            dfp_Na = pd.DataFrame({"Pourcentage_Na": round(dfp.isnull().sum() / (dfp.shape[0]) * 100, 2)})
+            st.write(dfp_Na)
 
+        # Show box plots for numerical variables
+        if box_plots:
+            for col in dfp.select_dtypes('float'):
+                plt.figure()
+                sns.boxplot(dfp[col])
+                st.pyplot()
+
+        # Show unique values for categorical variables
+        if unique_values:
+            for col in dfp.select_dtypes('object'):
+                st.write(f'{col :-<30} {dfp[col].unique()}')
+
+        # Show descriptive statistics before imputation
+        if descriptive_statistics_before_imputation:
+            cat_var_avant = dfp[['Motif_pret', 'Profession']]
+            st.write(cat_var_avant.describe())
+            st.write(dfp.describe())
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    #---------------------------------------------------------------#
     # Detection of outliers
     sidebar.subheader('Detection of outliers')
     if st.sidebar.checkbox('box plots for outlier detection'):
@@ -200,6 +271,9 @@ def main():
 
         st.write('After imputation:')
         st.write(dfp.isnull().sum())
+
+
+
 
     sidebar.subheader('Correlation Analysis')
     st.subheader('Variable Correlation Analysis : ') 
