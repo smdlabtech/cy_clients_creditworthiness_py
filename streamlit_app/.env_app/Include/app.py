@@ -8,10 +8,9 @@ import seaborn as sns
 import pylab as pl
 
 # from streamlit.components import AgGrid, GridOptionsBuilder  ## Manage grid output
+import styles_app  ## Module local créer pour le style de l'application (local module)
+from styles_app import load_image
 
-
-# import mod_styles_app as style_app
-import styles_app as styles_app  ## Module local créer pour le style de l'application
 from sklearn.impute import KNNImputer
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
@@ -58,7 +57,8 @@ def main():
     # https://www.youtube.com/watch?v=nnmBdpvN6u8
     
 
-    
+    #------------------#
+    ##  Page settings ##
     st.set_page_config(
         page_title="Creditworthiness",
         # page_icon=":rocket:",  # Peut être un emoji ou un chemin vers un fichier d'image
@@ -73,29 +73,41 @@ def main():
         
     )
 
-    st.title("Welcome to My Streamlit App")
-    st.sidebar.header("Sidebar Content")
-
     
-    
-    # st.title("Predicting the creditworthiness of a bank's customers")
+    # App's Title (title, font)
+    #st.title("Predicting the creditworthiness of a bank's customers")
+    # st.sidebar.header("Sidebar Content")
+    st.title("Welcome !")
     st.markdown("<h1 style='text-align: center; color: grey;'>Predicting the Creditworthiness of Bank Customers</h1>", unsafe_allow_html=True)
     
-
-    ### Initialisation des paramètres de mise en forme :
+    
+    ################################################ 
+    # Initialisation des paramètres de mise en forme :
     sidebar = st.sidebar
     block = st.container()
 
-    ##st.set_page_config(page_icon="🚀")
 
 
-    # Ajouter un grand titre dans la sidebar
-    # sidebar.title("Sidebar Panel : ")
-
-    # Ajouter un titre stylisé dans la sidebar
-    sidebar.markdown("<h1 style='text-align: left; color: grey;'>Sidebar Panel : </h1>", unsafe_allow_html=True)
+    # Ajout de logo dans le sidebar
+    with st.sidebar:
+        path_senlab_ia_gen = load_image("senlab_ia_gen_rmv_bgrd.png")  ## load_image : retourne le chemin de l'image
+    
+        # Afficher l'image avec des paramètres personnalisés
+        st.image(path_senlab_ia_gen, 
+                caption="SenLab IA",   # Légende de l'image
+                width=200,
+                use_column_width=True,   # Ignorer la largeur de la colonne et utiliser la largeur spécifiée
+                output_format='PNG'   # Format de l'image (par exemple 'JPEG', 'PNG')
+                )   
 
             
+    ##st.set_page_config(page_icon="🚀")
+    # sidebar.title("Sidebar Panel : ")
+    sidebar.markdown("<h1 style='text-align: left; color: grey;'>Sidebar Panel : </h1>", unsafe_allow_html=True)
+ 
+
+ 
+    
     #------------------#
     ## 0. Load Data ---#
     # with st.spinner("Loading data"): ## (Indent code)
@@ -109,14 +121,14 @@ def main():
             with st.sidebar.expander("**(Options)**", expanded=True):  # Modification ici pour utiliser st.sidebar.expander
                 
                 # Créer un conteneur pour les cases à cocher
-                # with st.container():
-                    show_raw_data = st.checkbox('Raw data')
-                    data_after_columns_renamed = st.checkbox('Ranemmed columns')
-
-            # Afficher les données brutes
-        # with st.echo('below') : 
+                show_raw_data = st.checkbox('Raw data')
+                data_after_columns_renamed = st.checkbox('Ranemmed columns')
+                            
+            # Afficher les données brutes et calculer le nombre de variables
             if show_raw_data:
-                st.write("Raw data :")
+                # Afficher les données brutes et calculer le nombre de variables en une seule ligne
+                st.write("**Raw data** :", f"{dfp.shape[1]}", "variables")
+
                 st.write(dfp)
 
             # Renommer les colonnes
@@ -129,7 +141,7 @@ def main():
             
             # Afficher les données après le renommage des colonnes
             if data_after_columns_renamed:
-                st.write("Data [renamed columns] :")
+                st.write("**Data [renamed columns]** :", f"{dfp.shape[1]}", "variables")
                 st.write(dfp)
                 st.success("Success !")  # Message de succès
                 
@@ -141,31 +153,108 @@ def main():
     # Section for Descriptive Statistics
     st.subheader('Descriptive Statistics : ')
     with st.expander("**Preview [Descriptive Statistics]**"):
-        sidebar.subheader('Descriptive Statistics : ')
+        sidebar.subheader('Descriptive Statistics')
         with st.sidebar.expander("**(Options)**", expanded=True):
             shape = st.checkbox('Shape')
             dtypes = st.checkbox('Dtypes')
             value_counts = st.checkbox('Value counts')
 
-        # Display shape of the data
-        if shape:
-            st.write("Shape :")
-            st.write(dfp.shape)
+        col1, col2, col3 = st.columns(3)
+            
+        with col1:
+            # Display shape of the data
+            if shape:
+                st.write("**Load data** (Rows, Columns) :", dfp.shape)
 
-        # Display data types of the columns
-        if dtypes:
-            st.write("Data Types (dtypes) :")
-            st.write(dfp.dtypes)
+                
+            # Display data types of the columns
+            if dtypes:
+                st.write("**Data Types (dtypes)** : Variables")
+                dtypes_df = dfp.dtypes.reset_index()
+                dtypes_df.index = dtypes_df.index + 1  # Commencer l'index par 1
+                st.write(dtypes_df)
 
-        # Display value counts for specific columns
-        if value_counts:
-            st.write("Value Counts :")
-            st.write(dfp["Incident_r"].value_counts(dropna=False))
-            st.write(dfp["Motif_pret"].value_counts(dropna=False))
-            st.write(dfp["Profession"].value_counts(dropna=False))
-        
-        # Adjust the 'Age_cred' column
-        dfp['Age_cred'] = round(dfp['Age_cred'] / 12, 2)
+
+        with col2:
+            # Display value counts for specific columns
+            # if value_counts:
+            #     st.write("**Value Counts** : Categorical variables")
+            #     st.write(dfp["Incident_r"].value_counts(dropna=False))
+            #     st.write(dfp["Motif_pret"].value_counts(dropna=False))
+            #     st.write(dfp["Profession"].value_counts(dropna=False))
+            
+            if value_counts:
+                st.write("**Value Counts** : Categorical variables")
+                
+                st.write("**frequency** : ")
+                st.write(dfp["Incident_r"].value_counts(dropna=False))
+                st.write(dfp["Motif_pret"].value_counts(dropna=False))
+                st.write(dfp["Profession"].value_counts(dropna=False))
+            
+                #----
+                # Variables catégorielles à afficher
+                # categorical_vars = ["Incident_r", "Motif_pret", "Profession"]
+                categorical_vars = ["Incident_r"]
+
+                st.write("**distributions** : ")
+                for var in categorical_vars:
+                    st.write(f"**var** : {var} ")
+                    value_counts_data = dfp[var].value_counts(dropna=False)
+
+                    # Créer un countplot avec Seaborn
+                    fig, ax = plt.subplots(figsize=(10, 6))
+                    sns.countplot(x=var, data=dfp, ax=ax)
+                    ax.set_xlabel(var)
+                    ax.set_ylabel('Frequency')
+                    ax.set_title(f'Distribution of {var}')
+                    plt.xticks(rotation=45)
+                    st.pyplot(fig)
+
+
+
+
+        with col3:
+            # Adjust the 'Age_cred' column
+            st.write("**Age_cred** : Proportion of customers by credit age")
+            st.write("**frequency** : ")
+            dfp['Age_cred'] = round(dfp['Age_cred'] / 12, 2)
+            dfp_sorted = dfp.sort_values(by='Age_cred', ascending=False)
+            st.write(dfp_sorted['Age_cred'])
+            
+            #--
+            # Plotting the distribution of credit age
+            st.write("**distributions** : ")
+            fig, ax = plt.subplots(figsize=(10, 6))
+            sns.histplot(dfp_sorted['Age_cred'], bins=20, kde=True, ax=ax)
+            ax.set_xlabel('Age_cred (years)')
+            ax.set_ylabel('Frequency (Customers)')
+            ax.set_title('Distribution of Age_cred')
+            st.pyplot(fig)
+            #--
+
+            
+            # Représente les classes d'âge de crédit avec le nombre de clients en intervals
+            # Utilise la variable "Age_cred" pour créer des classe d'age d'intervalle 5.
+            
+            #--
+            bins = np.arange(0, dfp_sorted['Age_cred'].max() + 5, 5)
+            age_intervals = pd.cut(dfp_sorted['Age_cred'], bins=bins)
+            age_counts = age_intervals.value_counts().sort_index()
+
+            # Créer un DataFrame pour les données
+            age_data = pd.DataFrame({'Age Interval': age_counts.index.astype(str),
+                                    'Number of Customers': age_counts.values})
+
+            # Représenter les classes d'âge de crédit avec le nombre de clients en intervalles
+            fig, ax = plt.subplots(figsize=(10, 6))
+            sns.barplot(x='Age Interval', y='Number of Customers', data=age_data, ax=ax)
+            ax.set_xlabel('Credit Age_cred (Intervals : 5 years)')
+            ax.set_ylabel('Number of Customers')
+            ax.set_title('Distribution of Age_cred (Intervals : 5 years)')
+            plt.xticks(rotation=45)
+            st.pyplot(fig)
+            #--
+            
 
 
 
@@ -215,6 +304,7 @@ def main():
             with col1:
                 st.subheader('Cols with missing values')
                 st.write(dfp.isna().any())
+                
             with col2:
                 st.subheader('Number of missing values')
                 st.write(dfp.isna().sum())
@@ -243,26 +333,74 @@ def main():
             st.write(dfp.describe())
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    #---------------------------------------------------------------#
+#---------------------------------------------------------------------------------#
+
     # Detection of outliers
+    st.subheader('Detection of outliers:')
     sidebar.subheader('Detection of outliers')
-    if st.sidebar.checkbox('box plots for outlier detection'):
-        st.subheader('Box Plots for Outlier Detection')
-        for col in dfp.select_dtypes(include=np.number):
-            st.write(f'Box plot for {col}')
-            fig, ax = plt.subplots()
-            ax.boxplot(dfp[col].dropna())
-            st.pyplot()
+
+    with st.expander("**Preview [Detection of outliers]**"):
+        
+        with st.container():
+            # Create adjustable columns for checkboxes
+            col1, col2 = st.columns(2)
+
+            #--------#
+            with col1:
+                box_plots_checkbox = st.sidebar.checkbox('Box plots for outlier detection')
+
+                if box_plots_checkbox:
+                    # List of outlier's variables 
+                    outliers_info = []
+
+                    for col in dfp.select_dtypes(include=np.number):
+                        st.write(f'Box plot for: {col}')
+                        fig, ax = plt.subplots()
+                        ax.boxplot(dfp[col].dropna())
+                        st.pyplot(fig)
+                        
+                        # Counting outliers
+                        outliers_count = len(dfp[col][dfp[col] > dfp[col].quantile(0.75) + 1.5 * (dfp[col].quantile(0.75) - dfp[col].quantile(0.25))] +
+                                        dfp[col][dfp[col] < dfp[col].quantile(0.25) - 1.5 * (dfp[col].quantile(0.75) - dfp[col].quantile(0.25))])
+                        
+                        # Calculate total number of elements per variable
+                        total_elements = dfp[col].count()
+                        
+                        # Calculate percentage of outliers over total elements
+                        outliers_percentage = outliers_count / total_elements * 100
+                        
+                        # Append variable name, number of outliers, total elements, and outlier percentage to the list
+                        outliers_info.append({'Variable': col, 
+                                            'Outliers count': outliers_count,
+                                            'Total elements': total_elements,
+                                            'Outliers percentage (%)': outliers_percentage})
+                    # Convert the list of dictionaries to DataFrame
+                    outliers_df = pd.DataFrame(outliers_info)
+                    
+                    # Sort DataFrame by Outliers percentage (# Reset DataFrame index)
+                    outliers_df_sorted = outliers_df.sort_values(by='Outliers percentage (%)', ascending=False)
+                    outliers_df_sorted.reset_index(drop=True, inplace=True)
+                    outliers_df_sorted.index = np.arange(1, len(outliers_df_sorted) + 1)
+
+
+
+
+
+            #--------#
+            with col2:
+                outliers_checkbox = st.sidebar.checkbox('Outliers (check above first)')
+                                
+                ## Displaying Outliers
+                if outliers_checkbox:
+                    # Showing DataFrame with variables, number of outliers, total elements, and outlier percentage detected
+                    st.subheader("Outliers proportions (percentage):")
+                    st.table(outliers_df_sorted)
+                    st.success("Success !")  # Message de succès
+
+
+
+
+    #---------------------------------------------------------------#
     
     # Catching missing variables containing missing values
     sidebar.subheader('Missing values')
@@ -458,7 +596,27 @@ def main():
     # SCORING : (Predictions)
     #-----------------------------------------#
         
+        
+        
+        
 
+    # #-----------------------------------------#
+    # ## Ajout de logo pour les bas de pages : 
+    # # Ajout de logo dans le sidebar
+    # with st.sidebar:
+    #     path_senlab_ia_gen = load_image("senlab_ia_gen_rmv_bgrd.png")  ## load_image : retourne le chemin de l'image
+    
+    #     # Afficher l'image avec des paramètres personnalisés
+    #     st.image(path_senlab_ia_gen, 
+    #             caption="SenLab IA",   # Légende de l'image
+    #             width=20,
+    #             use_column_width=True,   # Ignorer la largeur de la colonne et utiliser la largeur spécifiée
+    #             output_format='PNG'   # Format de l'image (par exemple 'JPEG', 'PNG')
+    #             )
+
+    # #-----------------------------------------#
+    
+    
 
 if __name__ == "__main__":
     # st.set_page_config()
