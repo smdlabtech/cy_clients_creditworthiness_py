@@ -1,6 +1,8 @@
-from itertools import combinations
 import streamlit as st
+from streamlit_carousel import carousel
+
 import os
+import time
 import numpy as np
 import pandas as pd
 import scipy as sc
@@ -8,20 +10,13 @@ import scipy.stats as stats
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pylab as pl
+from itertools import combinations
 from scipy.stats import chi2_contingency
-
-
-# from streamlit.components import AgGrid, GridSelect optionsBuilder  ## Manage grid output
-## Module local créer pour le style de l'application (local module)
-import styles_app  
-from styles_app import load_image
-
 
 from sklearn.impute import KNNImputer
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
-import matplotlib.pyplot as plt
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
@@ -29,41 +24,49 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
 
 
+## From streamlit.components import AgGrid, GridSelect optionsBuilder  ## Manage grid output
+## Module local créer pour le style de l'application (local module)
 
-# LOAD DATASET
+import styles_app
+
+###1. Add html component (file)
+def display_html(file_name):
+    try:
+        html_content = styles_app.load_html(file_name)
+        st.markdown(html_content, unsafe_allow_html=True)
+    except FileNotFoundError as e:
+        st.error(f"Error: {e}")
+        
+
+###2. Fonction pour charger et afficher le contenu JavaScript
+def display_js(file_name):
+    try:
+        html_content = styles_app.load_js(file_name)
+        st.markdown(html_content, unsafe_allow_html=True)
+    except FileNotFoundError as e:
+        st.error(f"Error: {e}")
+
+
+###3. LOAD DATASET
 def load_data():
-    # Chemin du répertoire courant
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    
-    # Chemin du dossier "_data" relatif au répertoire courant
     data_dir = os.path.join(current_dir, "_data")
-    
-    # Chemin complet du fichier de données
     data_file = os.path.join(data_dir, "Tab2.sas7bdat")
-    
-    # Définir les options d'affichage de Pandas
     pd.set_option('display.max_column', 18)
-    
-    # Charger les données
     dfp = pd.read_sas(data_file)
     return dfp
 
 
+# Tuto :
+# https://www.youtube.com/watch?v=nnmBdpvN6u8
+
 #--------------#
 # MAIN FUNCTION
 #--------------#
+###4. main
 def main():
-    
-    #---------------------------------#
-    # Set PAGE configuration
-    #---------------------------------#
-    
-    # Tuto :
-    # https://www.youtube.com/watch?v=nnmBdpvN6u8
-    
 
-    #------------------#
-    ##  Page settings ##
+    ### Set PAGE configuration
     st.set_page_config(
         page_title="Creditworthiness",
         # page_icon=":rocket:",  # Peut être un emoji ou un chemin vers un fichier d'image
@@ -95,7 +98,7 @@ def main():
 
     # Ajout de logo dans le sidebar
     with st.sidebar:
-        path_senlab_ia_gen = load_image("senlab_ia_gen_rmv_bgrd.png")  ## load_image : retourne le chemin de l'image
+        path_senlab_ia_gen = styles_app.load_img("senlab_ia_gen_rmv_bgrd.png")  ## load_img : retourne le chemin de l'image
     
         # Afficher l'image avec des paramètres personnalisés
         st.image(path_senlab_ia_gen, 
@@ -185,7 +188,7 @@ def main():
 
                 
                 ## Statistic Test : Chix-2 test
-                css_styles = styles_app.input_css("style.css")
+                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -508,7 +511,7 @@ def main():
                     
                     
                     ## Definition of mode
-                    css_styles = styles_app.input_css("style.css")
+                    css_styles = styles_app.load_css("style.css")
                     st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                     st.markdown("""
                     <div class="container">
@@ -765,7 +768,7 @@ def main():
                 st.subheader("Models")
                 
                 ## Model : K-NN (K-Nearest Neighbors)
-                css_styles = styles_app.input_css("style.css")
+                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -779,7 +782,7 @@ def main():
                 """, unsafe_allow_html=True)
                 
                 ## Model : Decision Tree                
-                css_styles = styles_app.input_css("style.css")
+                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -797,7 +800,7 @@ def main():
             
             
                 ## Model : Logistic Regression
-                css_styles = styles_app.input_css("style.css")
+                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -811,7 +814,7 @@ def main():
                 """, unsafe_allow_html=True)
                 
                 ## Model : Random Forest
-                css_styles = styles_app.input_css("style.css")
+                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -826,13 +829,13 @@ def main():
                 """, unsafe_allow_html=True)
 
                 
-                # css_styles = styles_app.input_css("style.css")
+                # css_styles = styles_app.load_css("style.css")
                 # st.subheader("Model metrics", color=css_styles)
                 st.subheader("Metrics")
                 
                 
                 ## 1. Confusion Matrix : Definition
-                css_styles = styles_app.input_css("style.css")
+                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -872,7 +875,7 @@ def main():
                 st.write("CM : Confusion Matrix")
                 
                 ## 2. Error Rate : Definition
-                css_styles = styles_app.input_css("style.css")
+                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -888,7 +891,7 @@ def main():
                 
                 
                 ## 3. Precision : Definition
-                css_styles = styles_app.input_css("style.css")
+                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -906,7 +909,7 @@ def main():
                 
                 
                 ## 4. Recall (Sensitivity) : Definition
-                css_styles = styles_app.input_css("style.css")
+                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -923,7 +926,7 @@ def main():
 
                     
                 ## 5. F1 Score : Definition
-                css_styles = styles_app.input_css("style.css")
+                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -942,7 +945,7 @@ def main():
                     
                 ## 6. F1 Score : Definition
                 with col2 : 
-                    css_styles = styles_app.input_css("style.css")
+                    css_styles = styles_app.load_css("style.css")
                     st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                     st.markdown("""
                     <div class="container">
@@ -1008,24 +1011,10 @@ def main():
         
         
 
-    # #-----------------------------------------#
-    # # # FOOTER : Bas de page
-    # #-----------------------------------------#
-    
-    # ## Ajout de logo pour les bas de pages : 
-    # # Ajout de logo dans le sidebar
-    # with st.sidebar:
-    #     path_senlab_ia_gen = load_image("senlab_ia_gen_rmv_bgrd.png")  ## load_image : retourne le chemin de l'image
-    
-    #     # Afficher l'image avec des paramètres personnalisés
-    #     st.image(path_senlab_ia_gen, 
-    #             caption="SenLab IA",   # Légende de l'image
-    #             width=20,
-    #             use_column_width=True,   # Ignorer la largeur de la colonne et utiliser la largeur spécifiée
-    #             output_format='PNG'   # Format de l'image (par exemple 'JPEG', 'PNG')
-    #             )
-
-    # #-----------------------------------------#
+    #-----------------------------------------#
+    # FOOTER : Bas de page (html)
+    #-----------------------------------------#
+    display_html('footer.html')
     
     
 
