@@ -1,5 +1,5 @@
 import streamlit as st
-from streamlit_carousel import carousel
+# from streamlit_carousel import carousel
 
 import os
 import time
@@ -26,8 +26,8 @@ from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, r
 
 ## From streamlit.components import AgGrid, GridSelect optionsBuilder  ## Manage grid output
 ## Module local créer pour le style de l'application (local module)
-
 import styles_app
+
 
 ###1. Add html component (file)
 def display_html(file_name):
@@ -38,13 +38,14 @@ def display_html(file_name):
         st.error(f"Error: {e}")
         
 
-###2. Fonction pour charger et afficher le contenu JavaScript
+###2. Display JavaScript
 def display_js(file_name):
     try:
         html_content = styles_app.load_js(file_name)
         st.markdown(html_content, unsafe_allow_html=True)
     except FileNotFoundError as e:
         st.error(f"Error: {e}")
+
 
 
 ###3. LOAD DATASET
@@ -89,11 +90,14 @@ def main():
     st.markdown("<h1 style='text-align: center; color: grey;'>Predicting the Creditworthiness of Bank Customers</h1>", unsafe_allow_html=True)
     
     
+    ### Initialisation du style css dans l'application
+    css_styles = styles_app.load_css("style.css")
+    
+    
     ################################################ 
     # Initialisation des paramètres de mise en forme :
     sidebar = st.sidebar
     block = st.container()
-
 
 
     # Ajout de logo dans le sidebar
@@ -125,6 +129,8 @@ def main():
     st.subheader('Load Data : ')
     st.sidebar.subheader('1. Load Data')  # Modification ici pour utiliser st.sidebar.subheader
     with st.expander("**Preview [Load Data]**"):
+        
+        
         with st.container():
             with st.sidebar.expander("**(Select options)**", expanded=True):  # Modification ici pour utiliser st.sidebar.expander
                 
@@ -136,7 +142,6 @@ def main():
             if show_raw_data:
                 # Afficher les données brutes et calculer le nombre de variables en une seule ligne
                 st.write("**Raw data** :", f"{dfp.shape[1]}", "variables")
-
                 st.write(dfp)
 
             # Renommer les colonnes
@@ -152,9 +157,8 @@ def main():
                 st.write("**Data [renamed columns]** :", f"{dfp.shape[1]}", "variables")
                 st.write(dfp)
                 st.success("Success !")  # Message de succès
-                
-            
-           
+                        
+    
     #---------------------------#
     # 1. Descriptive Statistics
      
@@ -188,7 +192,6 @@ def main():
 
                 
                 ## Statistic Test : Chix-2 test
-                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -511,7 +514,6 @@ def main():
                     
                     
                     ## Definition of mode
-                    css_styles = styles_app.load_css("style.css")
                     st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                     st.markdown("""
                     <div class="container">
@@ -597,6 +599,47 @@ def main():
                     high_corr_df = pd.DataFrame(high_corr_pairs, columns=['Variable1', 'Variable2', 'Correlation'])
                     high_corr_df = high_corr_df.sort_values(by='Correlation', ascending=False)
                     st.write(high_corr_df)
+
+
+        #------------------------------------
+        # Subsection for Correlation Analysis
+        st.subheader('Analyse des composantes (ACP)')
+        # L'ACP, ou l'Analyse en Composantes Principales, 
+        # est une méthode statistique utilisée pour réduire la dimensionnalité d'un ensemble de données 
+        # tout en conservant autant que possible la variabilité présente dans ces données. 
+        # Voici ses principaux objectifs et applications :
+        
+        #-------------------#
+        # # Critrere du Coude
+        # plot(res.pca$eig[,1], type="o", main='Eboulis de valeurs propres',
+        #     xlab = 'dimensions', ylab = 'valeurs propres')
+
+
+        # #-------------------#
+        # # Critrere de Kaiser
+        # res.pca$eig[,1:3]
+
+
+        # #-----------------------#
+        # # GRAPHIQUE DES INDIVIDUS
+        # plot.PCA(res.pca, axes = c(1,2),
+        #         choix = 'ind',
+        #         label = 'var',
+        #         new.plot = TRUE
+        # )
+
+
+        # #-----------------------#
+        # # GRAPHIQUE DES VARIABLES
+        # plot.PCA(res.pca, axes = c(1,2),
+        #         choix = 'var',
+        #         new.plot = TRUE,
+        #         col.var = 'black',
+        #         label = 'var'
+        # )
+        #-----------------------------------------------------------------------------------------------
+
+
 
     
     #-----------------------------------------------------------------------------#
@@ -768,7 +811,6 @@ def main():
                 st.subheader("Models")
                 
                 ## Model : K-NN (K-Nearest Neighbors)
-                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -782,7 +824,6 @@ def main():
                 """, unsafe_allow_html=True)
                 
                 ## Model : Decision Tree                
-                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -800,7 +841,6 @@ def main():
             
             
                 ## Model : Logistic Regression
-                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -814,7 +854,6 @@ def main():
                 """, unsafe_allow_html=True)
                 
                 ## Model : Random Forest
-                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -829,13 +868,11 @@ def main():
                 """, unsafe_allow_html=True)
 
                 
-                # css_styles = styles_app.load_css("style.css")
                 # st.subheader("Model metrics", color=css_styles)
                 st.subheader("Metrics")
                 
                 
                 ## 1. Confusion Matrix : Definition
-                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -875,7 +912,6 @@ def main():
                 st.write("CM : Confusion Matrix")
                 
                 ## 2. Error Rate : Definition
-                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -891,7 +927,6 @@ def main():
                 
                 
                 ## 3. Precision : Definition
-                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -909,7 +944,6 @@ def main():
                 
                 
                 ## 4. Recall (Sensitivity) : Definition
-                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -926,7 +960,6 @@ def main():
 
                     
                 ## 5. F1 Score : Definition
-                css_styles = styles_app.load_css("style.css")
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
@@ -945,7 +978,6 @@ def main():
                     
                 ## 6. F1 Score : Definition
                 with col2 : 
-                    css_styles = styles_app.load_css("style.css")
                     st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                     st.markdown("""
                     <div class="container">
