@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 # from streamlit_carousel import carousel
 
 import os
@@ -35,20 +36,32 @@ def display_html(file_name):
         html_content = styles_app.load_html(file_name)
         st.markdown(html_content, unsafe_allow_html=True)
     except FileNotFoundError as e:
-        st.error(f"Error: {e}")
+        st.error(f"Erreur: {e}")
+
         
 
 ###2. Display JavaScript
 def display_js(file_name):
     try:
-        html_content = styles_app.load_js(file_name)
-        st.markdown(html_content, unsafe_allow_html=True)
+        js_content = styles_app.load_js(file_name)
+        st.markdown(js_content, unsafe_allow_html=True)
     except FileNotFoundError as e:
-        st.error(f"Error: {e}")
+        st.error(f"Erreur: {e}")
+        
+
+def apply_js(file_name):
+    try:
+        js_content = styles_app.load_js(file_name)
+        # Utiliser st.write pour appliquer le code JavaScript
+        st.write(js_content, unsafe_allow_html=True)
+    except FileNotFoundError as e:
+        st.error(f"Erreur: {e}")
+
 
 
 
 ###3. LOAD DATASET
+@st.cache_data     ## Docorateur qui mets les données en cache.
 def load_data():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     data_dir = os.path.join(current_dir, "_data")
@@ -81,6 +94,7 @@ def main():
         }
         
     )
+
 
     
     # App's Title (title, font)
@@ -116,10 +130,19 @@ def main():
     ##st.set_page_config(page_icon="🚀")
     # sidebar.title("Sidebar Panel : ")
     sidebar.markdown("<h1 style='text-align: left; color: grey;'>Sidebar Panel : </h1>", unsafe_allow_html=True)
- 
-
- 
+    ## st.button("do stuff then close expander",on_click=toggle_closed)
     
+    #######################
+
+
+    
+    
+    
+    #######################    
+
+
+    
+
     #------------------#
     ## 0. Load Data ---#
     # with st.spinner("Loading data"): ## (Indent code)
@@ -127,10 +150,8 @@ def main():
     
     # with st.echo('below') : ## Affichage du code
     st.subheader('Load Data : ')
-    st.sidebar.subheader('1. Load Data')  # Modification ici pour utiliser st.sidebar.subheader
+    st.sidebar.subheader('1. Load Data')  # Modification ici pour utiliser st.sidebar.subheader    
     with st.expander("**Preview [Load Data]**"):
-        
-        
         with st.container():
             with st.sidebar.expander("**(Select options)**", expanded=True):  # Modification ici pour utiliser st.sidebar.expander
                 
@@ -157,8 +178,8 @@ def main():
                 st.write("**Data [renamed columns]** :", f"{dfp.shape[1]}", "variables")
                 st.write(dfp)
                 st.success("Success !")  # Message de succès
-                        
     
+
     #---------------------------#
     # 1. Descriptive Statistics
      
@@ -188,14 +209,12 @@ def main():
                 dtypes_df = dfp.dtypes.reset_index()
                 dtypes_df.index = dtypes_df.index + 1  # Commencer l'index par 1
                 st.write(dtypes_df)
-
-
                 
-                ## Statistic Test : Chix-2 test
+                ## Statistic Test : Chix-2 test                
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
                 <div class="container">
-                    <div class="header">Chix-2 test : 💡</div>
+                    <div class="header">Statistic Test : Chix-2 test 💡</div>
                     <div class="content">
                         <ul>
                             <li>
@@ -228,9 +247,9 @@ def main():
                 contingency_table = pd.crosstab(row_var, col_var)
                 st.dataframe(contingency_table)
                 chi2_stat, p_value, dof, expected = chi2_contingency(contingency_table)
-                st.write(f"**[Test results]** : {chi2_stat}, P-value : {p_value}")
+                st.write(f"**[Statistic Test Results]** : {chi2_stat},P-value : {p_value}")
                 if p_value > 0.05 : st.write(f"The 2 variables are **independent**.")
-                else : st.write(f"We conclude that there is a **statistical link** between the two variables.So these 2 variables are not independent.", color = "blue")
+                else : st.write(f"We conclude that there is a **statistical link** between the two variables. So these 2 variables are not independent.", color = "blue")
                                 
 
         #--------#
@@ -558,6 +577,7 @@ def main():
             # Create adjustable columns for checkboxes => Sidebar widgets (checkboxes)
             with sidebar.expander("**(Select options)**", expanded=True):
                 transform_categorical_variables = st.checkbox('Transform categorical variables')
+                pca_analysis = st.checkbox('PCA Analysis')
                 correlation_matrix = st.checkbox('Correlation matrix')
                 analyze_correlations = st.checkbox('Analyze correlations')
 
@@ -573,9 +593,30 @@ def main():
             # Create adjustable columns for checkboxes
             col1, col2 = st.columns(2)
 
-            # Option to Display Correlation Matrix
+            #--------#
             with col1:
+                
                 if correlation_matrix:
+                    
+                    ## Model: Principal Component Analysis
+                    st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
+                    st.markdown("""
+                    <div class="container">
+                        <div class="header">Correlation Matrix (CM): 💡</div>
+                        <div class="content">
+                            <p>A correlation matrix is a table showing correlation coefficients between variables. Each cell in the table shows the correlation between two variables. The value is between -1 and 1.</p>
+                            <p>Here is a more detailed definition of a correlation matrix:</p>
+                            <ul>
+                                <li><strong>Correlation Coefficient:</strong> The correlation coefficient is a measure of the linear relationship between two variables. A value of 1 indicates a perfect positive correlation, -1 indicates a perfect negative correlation, and 0 indicates no correlation.</li>
+                                <li><strong>Symmetric Matrix:</strong> The correlation matrix is symmetric because the correlation between variable A and variable B is the same as the correlation between variable B and variable A.</li>
+                                <li><strong>Diagonal Values:</strong> The diagonal values of a correlation matrix are always 1 because each variable is perfectly correlated with itself.</li>
+                                <li><strong>Usage:</strong> Correlation matrices are used in various statistical analyses to understand the relationships between variables, to detect multicollinearity in regression analyses, and to serve as input for other analyses like PCA.</li>
+                            </ul>
+                            <p>In summary, a correlation matrix provides a concise summary of the relationships between multiple variables, helping to identify patterns and dependencies in the data.</p>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
                     # st.write("**(Raw data)** :", f"{dfp.shape[1]}", "variables")
                     st.subheader('Correlation Matrix (CM) :')
                     corr = dfp.corr()
@@ -583,8 +624,8 @@ def main():
                     sns.heatmap(corr, annot=True, fmt=".2f", ax=ax, cmap='coolwarm')
                     st.pyplot(fig)  # Pass the figure to st.pyplot()
 
-
-            with col2:
+                
+                
                 if analyze_correlations:
                     # Correlations var
                     st.subheader('Correlation (corr. with predictive var) :')
@@ -600,44 +641,73 @@ def main():
                     high_corr_df = high_corr_df.sort_values(by='Correlation', ascending=False)
                     st.write(high_corr_df)
 
+            
+            
+            
+            #------------------------------------#
+            # Option to Display Correlation Matrix
+            with col2:
+                
+                if pca_analysis:
+                    ## Model: Principal Component Analysis
+                    st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
+                    st.markdown("""
+                    <div class="container">
+                        <div class="header">Principal Component Analysis (PCA) : 💡</div>
+                        <div class="content">
+                            <p>Principal Component Analysis (PCA) is a statistical method used to transform multivariate data into a set of linearly uncorrelated variables, called principal components. The goal of PCA is to reduce the dimensionality of the data while preserving as much information as possible.</p>
+                            <p>Here is a more detailed definition of PCA:</p>
+                            <ul>
+                                <li><strong>Data Transformation:</strong> PCA takes a set of multivariate data and transforms it into a new set of variables, called principal components, which are linear combinations of the original variables.</li>
+                                <li><strong>Dimensionality Reduction:</strong> PCA reduces the dimensionality of the data by projecting the observations into a new space of variables that captures the maximum variance of the data.</li>
+                                <li><strong>Linear Independence:</strong> The principal components are uncorrelated with each other, meaning they capture different and independent aspects of the data variation.</li>
+                                <li><strong>PCA Usage:</strong> PCA is widely used for data visualization, dimensionality reduction, pattern detection, data compression, and preparing data for other analysis techniques.</li>
+                            </ul>
+                            <p>In summary, PCA is a powerful technique for exploring and analyzing multivariate data by reducing its complexity while preserving as much information as possible.</p>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                
 
-        #------------------------------------
-        # Subsection for Correlation Analysis
-        st.subheader('Analyse des composantes (ACP)')
-        # L'ACP, ou l'Analyse en Composantes Principales, 
-        # est une méthode statistique utilisée pour réduire la dimensionnalité d'un ensemble de données 
-        # tout en conservant autant que possible la variabilité présente dans ces données. 
-        # Voici ses principaux objectifs et applications :
-        
-        #-------------------#
-        # # Critrere du Coude
-        # plot(res.pca$eig[,1], type="o", main='Eboulis de valeurs propres',
-        #     xlab = 'dimensions', ylab = 'valeurs propres')
 
 
-        # #-------------------#
-        # # Critrere de Kaiser
-        # res.pca$eig[,1:3]
+                #------------------------------------
+                # Subsection for Correlation Analysis
+                st.subheader('Principal Component Analysis (PCA)')
+                # L'ACP, ou l'Analyse en Composantes Principales, 
+                # est une méthode statistique utilisée pour réduire la dimensionnalité d'un ensemble de données 
+                # tout en conservant autant que possible la variabilité présente dans ces données. 
+                # Voici ses principaux objectifs et applications :
+                
+                #-------------------#
+                # # Critrere du Coude
+                # plot(res.pca$eig[,1], type="o", main='Eboulis de valeurs propres',
+                #     xlab = 'dimensions', ylab = 'valeurs propres')
 
 
-        # #-----------------------#
-        # # GRAPHIQUE DES INDIVIDUS
-        # plot.PCA(res.pca, axes = c(1,2),
-        #         choix = 'ind',
-        #         label = 'var',
-        #         new.plot = TRUE
-        # )
+                # #-------------------#
+                # # Critrere de Kaiser
+                # res.pca$eig[,1:3]
 
 
-        # #-----------------------#
-        # # GRAPHIQUE DES VARIABLES
-        # plot.PCA(res.pca, axes = c(1,2),
-        #         choix = 'var',
-        #         new.plot = TRUE,
-        #         col.var = 'black',
-        #         label = 'var'
-        # )
-        #-----------------------------------------------------------------------------------------------
+                # #-----------------------#
+                # # GRAPHIQUE DES INDIVIDUS
+                # plot.PCA(res.pca, axes = c(1,2),
+                #         choix = 'ind',
+                #         label = 'var',
+                #         new.plot = TRUE
+                # )
+
+
+                # #-----------------------#
+                # # GRAPHIQUE DES VARIABLES
+                # plot.PCA(res.pca, axes = c(1,2),
+                #         choix = 'var',
+                #         new.plot = TRUE,
+                #         col.var = 'black',
+                #         label = 'var'
+                # )
+                #-----------------------------------------------------------------------------------------------
 
 
 
@@ -736,25 +806,8 @@ def main():
                     CM = confusion_matrix(y_test, y_pred)
                     st.write(CM)
                     
-                    # TN = CM[0, 0]
-                    # FN = CM[1, 0]
-                    # FP = CM[0, 1]
-                    # TP = CM[1, 1]
-                    
-                    # Accuracy_calc = (TP + TN)/(TN + FN + FP + TP)
-                    # Precision_calc = TP / (TP + FP)
-                    # Recall_calc = TP / (TP + FN)
-                    # Error_rate_calc = 1 - Accuracy_calc
-                    # F1_Score_calc = 2 * ((Precision_calc*Recall_calc) / (Precision_calc + Recall_calc))
-                    
-                    # st.write(f'Error rate (Calculation) :', Error_rate_calc)
-                    # st.write(f'Precision (Calculation) :', Precision_calc)
-                    # st.write(f'Recall (Calculation) :', Recall_calc)
-                    # st.write(f'F1 Score (Calculation) :', F1_Score_calc)
-                    # st.write(f'Accuracy (Calculation) :', Accuracy_calc)
+
                     #------------------------------------------------------------#
-
-
                     # from sklearn.datasets import load_digits
                     # from sklearn.model_selection import train_test_split, GridSearchCV
                     # from sklearn.neighbors import KNeighborsClassifier
@@ -808,7 +861,25 @@ def main():
             # MODELS & DEFINITIONS : in Col2
             #------------------------------------------#            
             with col2 : 
-                st.subheader("Models")
+                ## Model : K-NN (K-Nearest Neighbors)
+                st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
+                st.markdown("""
+                <div class="container">
+                    <div class="header">Statistical Model : 💡</div>
+                    <div class="content">
+                        <p>A statistical model is a mathematical representation of observed data. It describes the relationships between different variables in the data using statistical concepts and techniques.</p>
+                        <p>Here is a more detailed definition of a statistical model:</p>
+                        <ul>
+                            <li><strong>Mathematical Representation:</strong> A statistical model uses mathematical equations to represent the relationships between variables. These equations are based on statistical principles.</li>
+                            <li><strong>Parameters:</strong> The model includes parameters that quantify the strength and nature of the relationships between variables. These parameters are estimated from the data.</li>
+                            <li><strong>Assumptions:</strong> Statistical models are based on certain assumptions about the data, such as normality, independence, and linearity. These assumptions must be checked to ensure the validity of the model.</li>
+                            <li><strong>Usage:</strong> Statistical models are used for various purposes, including prediction, inference, hypothesis testing, and data exploration. They help in understanding the underlying patterns and relationships in the data.</li>
+                        </ul>
+                        <p>In summary, a statistical model provides a structured and formalized way to analyze data, making it possible to draw meaningful conclusions and make informed decisions based on the data.</p>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
                 
                 ## Model : K-NN (K-Nearest Neighbors)
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
@@ -911,6 +982,26 @@ def main():
                 ''')
                 st.write("CM : Confusion Matrix")
                 
+                # Affichage des métriques calculées en utilisant st.latex pour les formules
+                st.latex(r"""
+                \begin{align*}
+                \text{Accuracy} &= \frac{\text{TP} + \text{TN}}{\text{TP} + \text{TN} + \text{FP} + \text{FN}} \\
+                \text{Error Rate} &= 1 - \text{Accuracy} \\
+                \text{Precision} &= \frac{\text{TP}}{\text{TP} + \text{FP}} \\
+                \text{Recall} &= \frac{\text{TP}}{\text{TP} + \text{FN}} \\
+                \text{F1 Score} &= 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
+                \end{align*}
+                """)
+                
+                # Explication du Total Number of Examples
+                st.write("Where :")
+                st.markdown("""
+                - True Positives (TP)
+                - True Negatives (TN)
+                - False Positives (FP)
+                - False Negatives (FN)
+                """)
+                
                 ## 2. Error Rate : Definition
                 st.markdown(f"<style>{css_styles}</style>", unsafe_allow_html=True)
                 st.markdown("""
@@ -992,17 +1083,7 @@ def main():
                     
                     # Latex formula : Formule de calcul de l'Accuracy
                     st.latex(r'\text{{Accuracy}} = \frac{\text{{True Positives}} + \text{{True Negatives}}} {\text{{Total Number of Examples}}}')
-
-                    # Explication du Total Number of Examples
-                    st.markdown("""
-                    Where **"Total Number of Examples"** represents the sum of all examples in the dataset, including:
-                    - True Positives (TP)
-                    - True Negatives (TN)
-                    - False Positives (FP)
-                    - False Negatives (FN)
-                    """)
-
-                        
+                    st.write("Where **Total Number of Examples** represents the sum of all examples in the dataset.")
                         
                     #### Choose de the best model ####
                         
@@ -1046,11 +1127,11 @@ def main():
     #-----------------------------------------#
     # FOOTER : Bas de page (html)
     #-----------------------------------------#
-    display_html('footer.html')
+    display_html("footer.html")
     
     
 
 if __name__ == "__main__":
-    # st.set_page_config()
+    # st.set_page_config(page_title="Mon Application", layout="wide")
     main()
     

@@ -1,49 +1,50 @@
-# styles_app.py
 import os
 import streamlit as st
 
 
-### Chargement de style css
-def load_css(css_file):
-    """
-    Loads and applies a CSS file to a Streamlit application.
-    
-    Args:
-    css_file (str): Name of CSS file to load.
-    """
-    # Construire le chemin complet vers le fichier CSS en utilisant le nom du fichier passé en argument
-    css_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".", "assets", "css", css_file)
-    with open(css_path) as f:
-        css = f.read()
-    return css
-
-### Chargemement d'image dans l'application
 def load_img(image_file, caption=None, use_column_width=True):
     """
-    Loads and displays an image in a Streamlit application.
+    Charge et affiche une image dans une application Streamlit.
     
     Args:
-    image_file (str): Name of the image file to load.
-    caption (str): Optional caption to display below the image.
-    use_column_width (bool): Whether to use the column width for the image.
+    image_file (str): Nom du fichier image à charger.
+    caption (str): Légende facultative à afficher sous l'image.
+    use_column_width (bool): Utiliser ou non la largeur de colonne pour l'image.
     """
     # Construire le chemin complet vers le fichier image en utilisant le nom du fichier passé en argument
-    image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".", "assets", "img", image_file)
-    return image_path
+    image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "img", image_file)
+    return st.image(image_path, caption=caption, use_column_width=use_column_width)
 
 
-### styles_app.py
-def load_html(file_name):
+def load_css(css_file):
     """
-    Load the HTML content from the given file name.
+    Charge et applique un fichier CSS à une application Streamlit.
     
     Args:
-    file_name (str): The name of the HTML file to load.
+    css_file (str): Nom du fichier CSS à charger.
+    """
+    # Construire le chemin complet vers le fichier CSS en utilisant le nom du fichier passé en argument
+    css_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "css", css_file)
+    if not os.path.exists(css_path):
+        raise FileNotFoundError(f"File '{css_file}' not found at '{css_path}'")
+    
+    with open(css_path) as f:
+        css = f.read()
+    
+    st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
+
+
+def load_html(file_name):
+    """
+    Charge le contenu HTML à partir du nom de fichier donné.
+    
+    Args:
+    file_name (str): Nom du fichier HTML à charger.
 
     Returns:
-    str: The HTML content as a string.
+    str: Le contenu HTML en tant que chaîne de caractères.
     """
-    file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".", "assets", "html", file_name)
+    file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "html", file_name)
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"File '{file_name}' not found at '{file_path}'")
     
@@ -53,18 +54,17 @@ def load_html(file_name):
     return content
 
 
-### styles_app.py
 def load_js(file_name):
     """
-    Load the HTML content from the given file name.
+    Charge le contenu JavaScript à partir du nom de fichier donné.
     
     Args:
-    file_name (str): The name of the HTML file to load.
+    file_name (str): Nom du fichier JavaScript à charger.
 
     Returns:
-    str: The HTML content as a string.
+    str: Le contenu JavaScript en tant que chaîne de caractères.
     """
-    file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".", "assets", "js", file_name)
+    file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "js", file_name)
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"File '{file_name}' not found at '{file_path}'")
     
