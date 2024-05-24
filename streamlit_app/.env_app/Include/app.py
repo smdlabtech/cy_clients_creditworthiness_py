@@ -116,15 +116,7 @@ def main():
 
     # Ajout de logo dans le sidebar
     with st.sidebar:
-        path_senlab_ia_gen = styles_app.load_img("senlab_ia_gen_rmv_bgrd.png")  ## load_img : retourne le chemin de l'image
-    
-        # Afficher l'image avec des paramètres personnalisés
-        st.image(path_senlab_ia_gen, 
-                caption="SenLab IA",   # Légende de l'image
-                width=200,
-                use_column_width=True,   # Ignorer la largeur de la colonne et utiliser la largeur spécifiée
-                output_format='PNG'   # Format de l'image (par exemple 'JPEG', 'PNG')
-                )   
+        styles_app.load_img("senlab_ia_gen_rmv_bgrd.png", caption="SenLab IA", width=100, use_column_width=True, output_format='PNG')
 
             
     ##st.set_page_config(page_icon="🚀")
