@@ -1,8 +1,10 @@
 import os
 import streamlit as st
+from PIL import Image
+import io
 
 
-def load_img(image_file, caption=None, use_column_width=True):
+def load_img(image_file, caption=None, use_column_width=True, width=None, height=None, output_format=None):
     """
     Charge et affiche une image dans une application Streamlit.
     
@@ -10,10 +12,13 @@ def load_img(image_file, caption=None, use_column_width=True):
     image_file (str): Nom du fichier image à charger.
     caption (str): Légende facultative à afficher sous l'image.
     use_column_width (bool): Utiliser ou non la largeur de colonne pour l'image.
+    width (int): Largeur de l'image en pixels.
+    height (int): Hauteur de l'image en pixels.
+    output_format (str): Format de sortie de l'image (par exemple, 'PNG', 'JPEG').
     """
     # Construire le chemin complet vers le fichier image en utilisant le nom du fichier passé en argument
     image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "img", image_file)
-    return st.image(image_path, caption=caption, use_column_width=use_column_width)
+    return st.image(image_path, caption=caption, use_column_width=use_column_width, width=width, height=height, output_format=output_format)
 
 
 def load_css(css_file):
