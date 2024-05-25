@@ -65,11 +65,17 @@ Exemple de contenu pour.gitignore
 ```venv/```  
 Donc le fait d'ajouter dans le gitignore ce bout de code précédent permet de pouvoir intégré le .venv dans le repo.
 
-**5**- Activez l'environnement virtuel : Activez l'environnement virtuel en utilisant la commande appropriée selon votre système d'exploitation.
-```.\.venv\Scripts\activate``` et pour désactiver l'environnement :    
-```.\.venv\Scripts\Deactivate```    
+**5**- Activez l'environnement virtuel en utilisant la commande appropriée selon votre système d'exploitation.
 
-Et enfin, quand la **MAJ** du code **python** est terminée, vous pourrez créez le fichier de ```requirements.txt``` avec les commandes suivantes :  
+**(Windows)** : 
+```.\.venv\Scripts\activate```  pour activer l'environnement windows.  
+```.\.venv\Scripts\Deactivate```  pour désactiver.  
+
+**(Mac)** :  
+```source .\venv_mac\bin\activate``` et pour activer l'environnement.   
+```source .\venv_mac\bin\deactivate``` pour désactiver l'environnement.
+
+Et enfin, quand la **MAJ** du code **python** de l'application est terminée, vous pourrez créez le fichier de ```requirements.txt``` avec les commandes suivantes :  
 
 ```pip freeze > requirements.txt```    
 ```git add requirements.txt```    
