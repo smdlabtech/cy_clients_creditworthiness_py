@@ -4,7 +4,7 @@ from PIL import Image
 import io
 
 
-def load_img(image_file, caption=None, use_column_width=True, width=None, height=None, output_format=None):
+def load_img(image_file, caption=None, use_column_width=True, width=None, output_format=None):
     """
     Charge et affiche une image dans une application Streamlit.
     
@@ -18,7 +18,7 @@ def load_img(image_file, caption=None, use_column_width=True, width=None, height
     """
     # Construire le chemin complet vers le fichier image en utilisant le nom du fichier passé en argument
     image_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "img", image_file)
-    return st.image(image_path, caption=caption, use_column_width=use_column_width, width=width, height=height, output_format=output_format)
+    return st.image(image_path, caption=caption, use_column_width=use_column_width, width=width, output_format=output_format)
 
 
 def load_css(css_file):

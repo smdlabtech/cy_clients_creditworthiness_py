@@ -100,7 +100,7 @@ def main():
     # App's Title (title, font)
     #st.title("Predicting the creditworthiness of a bank's customers")
     # st.sidebar.header("Sidebar Content")
-    st.title("Welcome !")
+    # st.title("Welcome !")
     st.markdown("<h1 style='text-align: center; color: grey;'>Predicting the Creditworthiness of Bank Customers</h1>", unsafe_allow_html=True)
     
     
