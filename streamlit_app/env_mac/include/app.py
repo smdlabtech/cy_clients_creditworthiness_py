@@ -148,8 +148,8 @@ def main():
             with st.sidebar.expander("**(Select options)**", expanded=True):  # Modification ici pour utiliser st.sidebar.expander
                 
                 # Créer un conteneur pour les cases à cocher
-                show_raw_data = st.checkbox('Raw data')
-                data_after_columns_renamed = st.checkbox('Ranemmed columns')
+                show_raw_data = st.checkbox('Raw data', value=True)
+                data_after_columns_renamed = st.checkbox('Ranemmed columns', value=True)
                             
             # Afficher les données brutes et calculer le nombre de variables
             if show_raw_data:
@@ -182,9 +182,9 @@ def main():
         
         # Create adjustable columns for checkboxes => sidebar widgets (checkboxes)
         with st.sidebar.expander("**(Select options)**", expanded=True):
-            shape = st.checkbox('Shape')
-            dtypes = st.checkbox('Dtypes')
-            value_counts = st.checkbox('Value counts')
+            shape = st.checkbox('Shape', value=True)
+            dtypes = st.checkbox('Dtypes', value=True)
+            value_counts = st.checkbox('Value counts', value=True)
 
         # Format outputs results (visuals)
         col1, col2, col3 = st.columns(3)
@@ -328,15 +328,15 @@ def main():
 
             # Create adjustable columns for checkboxes  => Sidebar widgets (checkboxes)
             with sidebar.expander("**(Select options)**", expanded=True):
-                descriptions = st.checkbox('Descriptions')
-                pie_charts = st.checkbox('Pie charts')
-                count_plots = st.checkbox('Count plots')
-                missing_values = st.checkbox('Missing values')
-                missing_values_percentage = st.checkbox('Missing values (pctg)')
-                box_plots = st.checkbox('Box plots')
-                unique_values = st.checkbox('Unique values')
-                descriptive_statistics_before_imputation = st.checkbox('Descriptive statistics before imputation')
-                chix_test_qualitative_var = st.checkbox('Chix-2 test')
+                descriptions = st.checkbox('Descriptions', value=True)
+                pie_charts = st.checkbox('Pie charts', value=True)
+                count_plots = st.checkbox('Count plots', value=True)
+                missing_values = st.checkbox('Missing values',value=True)
+                missing_values_percentage = st.checkbox('Missing values (pctg)', value=True)
+                box_plots = st.checkbox('Box plots', value=True)
+                unique_values = st.checkbox('Unique values', value=True)
+                descriptive_statistics_before_imputation = st.checkbox('Descriptive statistics before imputation', value=True)
+                chix_test_qualitative_var = st.checkbox('Chix-2 test', value=True)
 
         # Show data descriptions
         if descriptions:
@@ -426,7 +426,7 @@ def main():
             st.write(cat_var_avant.describe())
             st.write(dfp.describe())
             
-        # chix_test_qualitative_var = st.checkbox('Chix-2 test')
+        # chix_test_qualitative_var = st.checkbox('Chix-2 test', value=True)
         # if chix_test_qualitative_var:
             
 
@@ -440,8 +440,8 @@ def main():
             
             # Create adjustable columns for checkboxes  => Sidebar widgets (checkboxes)
             with sidebar.expander("**(Select options)**", expanded=True):
-                box_plots_checkbox = st.checkbox('Box plots for outlier detection')
-                outliers_checkbox = st.checkbox('Outliers (check above first)')
+                box_plots_checkbox = st.checkbox('Box plots for outlier detection', value=True)
+                outliers_checkbox = st.checkbox('Outliers (check above first)', value=True)
 
 
             # Create adjustable columns for checkboxes
@@ -500,8 +500,8 @@ def main():
 
             # Create adjustable columns for checkboxes  => Sidebar widgets (checkboxes)
             with sidebar.expander("**(Select options)**", expanded=True):
-                missing_values_freq = st.checkbox('Missing values (review)', key='missing_values_freq')
-                impute_missing_values = st.checkbox('Impute missing values', key='impute_missing_values')
+                missing_values_freq = st.checkbox('Missing values (review)', value=True, key='missing_values_freq')
+                impute_missing_values = st.checkbox('Impute missing values', value=True, key='impute_missing_values')
 
             # Create adjustable columns for checkboxes
             col1, col2 = st.columns(2)
@@ -568,10 +568,10 @@ def main():
 
             # Create adjustable columns for checkboxes => Sidebar widgets (checkboxes)
             with sidebar.expander("**(Select options)**", expanded=True):
-                transform_categorical_variables = st.checkbox('Transform categorical variables')
-                pca_analysis = st.checkbox('PCA Analysis')
-                correlation_matrix = st.checkbox('Correlation matrix')
-                analyze_correlations = st.checkbox('Analyze correlations')
+                transform_categorical_variables = st.checkbox('Transform categorical variables', value=True)
+                pca_analysis = st.checkbox('PCA Analysis', value=True)
+                correlation_matrix = st.checkbox('Correlation matrix', value=True)
+                analyze_correlations = st.checkbox('Analyze correlations', value=True)
 
             # Option to Transform Categorical Variables
             if transform_categorical_variables:
@@ -713,9 +713,9 @@ def main():
             sidebar.subheader('4. Modelization')
             
             with sidebar.expander("**(Select options)**", expanded=True):
-                split_data = st.checkbox('Train and Test datasets')
-                train_models = st.checkbox('Train and evaluate models')
-                the_best_model = st.checkbox('Choose the best model')
+                split_data = st.checkbox('Train and Test datasets', value=True)
+                train_models = st.checkbox('Train and evaluate models', value=True)
+                the_best_model = st.checkbox('Choose the best model', value=True)
                 
         if split_data:
             # st.subheader('Train and Test datasets :')
@@ -1099,7 +1099,7 @@ def main():
     # ## Features importances  ##
     # with col2 : 
     #     st.subheader('Features importances : ')
-    #     st.checkbox('Features importances : ')
+    #     st.checkbox('Features importances : ', value=True)
     #     if name in ['Decision Tree', 'Random Forest']:
     #         st.write('Feature importances:')
     #         feature_importances = pd.Series(model.feature_importances_, index=X.columns)
