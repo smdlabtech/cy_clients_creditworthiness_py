@@ -4,7 +4,7 @@ from PIL import Image
 import io
 
 
-def load_img(image_file, caption=None, use_column_width=True, width=None, output_format=None):
+def load_img(image_file, caption=None, use_column_width=True, width=None, height=None, output_format=None):
     """
     Charge et affiche une image dans une application Streamlit.
     

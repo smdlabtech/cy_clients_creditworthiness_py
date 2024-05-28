@@ -100,7 +100,7 @@ def main():
     # App's Title (title, font)
     #st.title("Predicting the creditworthiness of a bank's customers")
     # st.sidebar.header("Sidebar Content")
-    # st.title("Welcome !")
+    st.title("Welcome !")
     st.markdown("<h1 style='text-align: center; color: grey;'>Predicting the Creditworthiness of Bank Customers</h1>", unsafe_allow_html=True)
     
     
@@ -148,8 +148,8 @@ def main():
             with st.sidebar.expander("**(Select options)**", expanded=True):  # Modification ici pour utiliser st.sidebar.expander
                 
                 # Créer un conteneur pour les cases à cocher
-                show_raw_data = st.checkbox('Raw data', value=True)
-                data_after_columns_renamed = st.checkbox('Ranemmed columns', value=True)
+                show_raw_data = st.checkbox('Raw data', value = True)
+                data_after_columns_renamed = st.checkbox('Ranemmed columns', value = True)
                             
             # Afficher les données brutes et calculer le nombre de variables
             if show_raw_data:
@@ -182,9 +182,9 @@ def main():
         
         # Create adjustable columns for checkboxes => sidebar widgets (checkboxes)
         with st.sidebar.expander("**(Select options)**", expanded=True):
-            shape = st.checkbox('Shape', value=True)
-            dtypes = st.checkbox('Dtypes', value=True)
-            value_counts = st.checkbox('Value counts', value=True)
+            shape = st.checkbox('Shape', value = True)
+            dtypes = st.checkbox('Dtypes', value = True)
+            value_counts = st.checkbox('Value counts', value = True)
 
         # Format outputs results (visuals)
         col1, col2, col3 = st.columns(3)
@@ -328,36 +328,40 @@ def main():
 
             # Create adjustable columns for checkboxes  => Sidebar widgets (checkboxes)
             with sidebar.expander("**(Select options)**", expanded=True):
-                descriptions = st.checkbox('Descriptions', value=True)
-                pie_charts = st.checkbox('Pie charts', value=True)
-                count_plots = st.checkbox('Count plots', value=True)
-                missing_values = st.checkbox('Missing values',value=True)
-                missing_values_percentage = st.checkbox('Missing values (pctg)', value=True)
-                box_plots = st.checkbox('Box plots', value=True)
-                unique_values = st.checkbox('Unique values', value=True)
-                descriptive_statistics_before_imputation = st.checkbox('Descriptive statistics before imputation', value=True)
-                chix_test_qualitative_var = st.checkbox('Chix-2 test', value=True)
+                descriptions = st.checkbox('Descriptions', value = True)
+                pie_charts = st.checkbox('Pie charts', value = True)
+                count_plots = st.checkbox('Count plots', value = True)
+                missing_values = st.checkbox('Missing values', value = True)
+                missing_values_percentage = st.checkbox('Missing values (pctg)', value = True)
+                box_plots = st.checkbox('Box plots', value = True)
+                unique_values = st.checkbox('Unique values', value = True)
+                descriptive_statistics_before_imputation = st.checkbox('Descriptive statistics before imputation', value = True)
+                chix_test_qualitative_var = st.checkbox('Chix-2 test', value = True)
 
         # Show data descriptions
         if descriptions:
             st.write("**Descriptions** :")
             st.write(dfp.describe(include="all"))
-
-        # Show pie charts for categorical variables
-        if pie_charts:
-            st.write("**Pie charts** :")
-            for col in dfp.select_dtypes('object'):
-                st.write(f'{col :-<30} {dfp[col].unique()}')
+        
+        
+        col1, col2 = st.columns(2)
+        with col1 :
+            # Show pie charts for categorical variables
+            if pie_charts:
+                st.write("**Pie charts** :")
+                for col in dfp.select_dtypes('object'):
+                    st.write(f'{col :-<30} {dfp[col].unique()}')
+                    fig, ax = plt.subplots()
+                    dfp[col].value_counts().plot.pie(ax=ax)
+                    st.pyplot(fig)
+        
+        with col2 :
+            # Show count plots
+            if count_plots:
+                st.write("**Count plots** :")
                 fig, ax = plt.subplots()
-                dfp[col].value_counts().plot.pie(ax=ax)
+                sns.countplot(x='Montant_pret', hue='Incident_r', data=dfp, ax=ax)
                 st.pyplot(fig)
-
-        # Show count plots
-        if count_plots:
-            st.write("**Count plots** :")
-            fig, ax = plt.subplots()
-            sns.countplot(x='Montant_pret', hue='Incident_r', data=dfp, ax=ax)
-            st.pyplot(fig)
             
             #-------------------------------------------------------------------
             # sns.countplot(x='Montant_pret', hue='Incident_r', data=dfp)
@@ -403,31 +407,39 @@ def main():
                 st.subheader('Number of missing values')
                 st.write(dfp.isna().sum())
 
+
+  
+        
         # Show missing values percentage
         if missing_values_percentage:
             dfp_Na = pd.DataFrame({"Pourcentage_Na": round(dfp.isnull().sum() / (dfp.shape[0]) * 100, 2)})
             st.write(dfp_Na)
 
-        # Show box plots for numerical variables
-        if box_plots:
-            for col in dfp.select_dtypes('float'):
-                fig, ax = plt.subplots()
-                sns.boxplot(dfp[col], ax=ax)
-                st.pyplot(fig)
 
-        # Show unique values for categorical variables
-        if unique_values:
-            for col in dfp.select_dtypes('object'):
-                st.write(f'{col :-<30} {dfp[col].unique()}')
+        col1, col2 = st.columns(2)
+        with col1:
+            # Show box plots for numerical variables
+            if box_plots:
+                for col in dfp.select_dtypes('float'):
+                    fig, ax = plt.subplots()
+                    sns.boxplot(dfp[col], ax=ax)
+                    st.pyplot(fig)
 
-        # Show descriptive statistics before imputation
-        if descriptive_statistics_before_imputation:
-            cat_var_avant = dfp[['Motif_pret', 'Profession']]
-            st.write(cat_var_avant.describe())
-            st.write(dfp.describe())
-            
-        # chix_test_qualitative_var = st.checkbox('Chix-2 test', value=True)
-        # if chix_test_qualitative_var:
+
+        with col2:
+            # Show unique values for categorical variables
+            if unique_values:
+                for col in dfp.select_dtypes('object'):
+                    st.write(f'{col :-<30} {dfp[col].unique()}')
+
+            # Show descriptive statistics before imputation
+            if descriptive_statistics_before_imputation:
+                cat_var_avant = dfp[['Motif_pret', 'Profession']]
+                st.write(cat_var_avant.describe())
+                st.write(dfp.describe())
+                
+            # chix_test_qualitative_var = st.checkbox('Chix-2 test', value = True)
+            # if chix_test_qualitative_var:
             
 
     
@@ -440,8 +452,8 @@ def main():
             
             # Create adjustable columns for checkboxes  => Sidebar widgets (checkboxes)
             with sidebar.expander("**(Select options)**", expanded=True):
-                box_plots_checkbox = st.checkbox('Box plots for outlier detection', value=True)
-                outliers_checkbox = st.checkbox('Outliers (check above first)', value=True)
+                box_plots_checkbox = st.checkbox('Box plots for outlier detection', value = True)
+                outliers_checkbox = st.checkbox('Outliers (check above first)', value = True)
 
 
             # Create adjustable columns for checkboxes
@@ -500,8 +512,8 @@ def main():
 
             # Create adjustable columns for checkboxes  => Sidebar widgets (checkboxes)
             with sidebar.expander("**(Select options)**", expanded=True):
-                missing_values_freq = st.checkbox('Missing values (review)', value=True, key='missing_values_freq')
-                impute_missing_values = st.checkbox('Impute missing values', value=True, key='impute_missing_values')
+                missing_values_freq = st.checkbox('Missing values (review)', value = True, key='missing_values_freq')
+                impute_missing_values = st.checkbox('Impute missing values', value = True, key='impute_missing_values')
 
             # Create adjustable columns for checkboxes
             col1, col2 = st.columns(2)
@@ -561,17 +573,17 @@ def main():
 
     #------------------------------------#
     # Subsection for Correlation Analysis
-    st.subheader('Correlation Analysis')
+    st.subheader('Correlation Analysis :')
     with st.expander("Preview [Correlation Analysis]"):
         with st.container():
             sidebar.subheader('3. Correlation Analysis')
 
             # Create adjustable columns for checkboxes => Sidebar widgets (checkboxes)
             with sidebar.expander("**(Select options)**", expanded=True):
-                transform_categorical_variables = st.checkbox('Transform categorical variables', value=True)
-                pca_analysis = st.checkbox('PCA Analysis', value=True)
-                correlation_matrix = st.checkbox('Correlation matrix', value=True)
-                analyze_correlations = st.checkbox('Analyze correlations', value=True)
+                transform_categorical_variables = st.checkbox('Transform categorical variables', value = True)
+                pca_analysis = st.checkbox('PCA Analysis', value = True)
+                correlation_matrix = st.checkbox('Correlation matrix', value = True)
+                analyze_correlations = st.checkbox('Analyze correlations', value = True)
 
             # Option to Transform Categorical Variables
             if transform_categorical_variables:
@@ -655,14 +667,13 @@ def main():
                                 <li><strong>Linear Independence:</strong> The principal components are uncorrelated with each other, meaning they capture different and independent aspects of the data variation.</li>
                                 <li><strong>PCA Usage:</strong> PCA is widely used for data visualization, dimensionality reduction, pattern detection, data compression, and preparing data for other analysis techniques.</li>
                             </ul>
-                            <p>In summary, PCA is a powerful technique for exploring and analyzing multivariate data by reducing its complexity while preserving as much information as possible.</p>
+                            <p> PCA consists in transforming related variables (known in statistics as “correlated” variables) into new variables that are decorrelated from one another. These new variables are called “principal components” or principal axes. 
+                                It enables us to summarize information by reducing the number of variables.</p>
+                            <p>In summary, PCA is a powerful technique for exploring and analyzing multivariate data by reducing its complexity while preserving as much information as possible.</p>                            
                         </div>
                     </div>
                     """, unsafe_allow_html=True)
                 
-
-
-
                 #------------------------------------
                 # Subsection for Correlation Analysis
                 st.subheader('Principal Component Analysis (PCA)')
@@ -707,15 +718,15 @@ def main():
     #-----------------------------------------------------------------------------#
     # MODELIZATION
     #-----------------------------------------------------------------------------#
-    st.subheader('Modelization :')
+    st.subheader('Modelization and Training Model :')
     with st.expander("**Preview [Split Data]**"):
         with st.container():
-            sidebar.subheader('4. Modelization')
+            sidebar.subheader('4. Modelization and Training Model')
             
             with sidebar.expander("**(Select options)**", expanded=True):
-                split_data = st.checkbox('Train and Test datasets', value=True)
-                train_models = st.checkbox('Train and evaluate models', value=True)
-                the_best_model = st.checkbox('Choose the best model', value=True)
+                split_data = st.checkbox('Train and Test datasets', value = True)
+                train_models = st.checkbox('Train and evaluate models', value = True)
+                the_best_model = st.checkbox('Choose the best model', value = True)
                 
         if split_data:
             # st.subheader('Train and Test datasets :')
@@ -727,6 +738,8 @@ def main():
             st.subheader('Train and Test datasets')
             col1, col2 = st.columns(2)
             
+            
+            # Création des base d'Apprentissage (Train dataset) et de base Test (Test dataset)
             with col1:
                 st.write('**Training dataset :** *Explanatory variables*')
                 st.write("(Rows, Cols) :", f"{X_train.shape}")
@@ -1079,11 +1092,26 @@ def main():
                         
                     #### Choose de the best model ####
                         
-
+    
+    #-----------------------------------------#
+    # MODELS : Ranking of the best model
+    #-----------------------------------------#
+    #### Choose de the best model ####
 
     
+    #-------------------------#
+    # ## Features importances  ##
+    # with col2 : 
+    #     st.subheader('Features importances : ')
+    #     st.checkbox('Features importances : ', value = True)
+    #     if name in ['Decision Tree', 'Random Forest']:
+    #         st.write('Feature importances:')
+    #         feature_importances = pd.Series(model.feature_importances_, index=X.columns)
+    #         st.write(feature_importances.sort_values(ascending=False))
+    #--------------------------------------------------------------------------------------#
     
-    #------------------------------------------#
+    
+    #-----------------------------------------#
     # MODELS : (Tuning de model)
     #-----------------------------------------#
     # sidebar.subheader('5. Model comparison')
@@ -1092,29 +1120,29 @@ def main():
     # Explain models features importances
     # TUNINGS : (Improve model performance by using only those variables that best explain the models)
     # Improve model performance by using only those variables that best explain the models
-    
-    
-    
-    #-------------------------#
-    # ## Features importances  ##
-    # with col2 : 
-    #     st.subheader('Features importances : ')
-    #     st.checkbox('Features importances : ', value=True)
-    #     if name in ['Decision Tree', 'Random Forest']:
-    #         st.write('Feature importances:')
-    #         feature_importances = pd.Series(model.feature_importances_, index=X.columns)
-    #         st.write(feature_importances.sort_values(ascending=False))
-    #--------------------------------------------------------------------------------------#
+    # Ranking of variable contributions to models.
+
+
+    #-----------------------------------------#
+    # MODEL : Model re-training
+    #-----------------------------------------#
+    # Ré-entraînement du model
+    sidebar.subheader("6. Model's Re-Training")
 
 
 
     #------------------------------------------#
     # SCORING : (Predictions)
     #-----------------------------------------#
-    sidebar.subheader('6. Scoring')        
-        
-        
-        
+    sidebar.subheader('7. Scoring')        
+     
+     
+     
+    #------------------------------------------#
+    # RE-INJECTION Predictions: (Predictions)
+    #-----------------------------------------#
+    sidebar.subheader('8. Re-injection of predictions ')        
+
 
     #-----------------------------------------#
     # FOOTER : Bas de page (html)
