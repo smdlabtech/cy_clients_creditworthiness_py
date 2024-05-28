@@ -1,5 +1,5 @@
 <p align="center"> 
-    <img src="streamlit_app/.env_app/Include/assets/img/etude-solvabilite.JPG" align="left"></img>	
+    <img src="img/etude-solvabilite.JPG" align="left"></img>	
 </p>
 <br>
 
