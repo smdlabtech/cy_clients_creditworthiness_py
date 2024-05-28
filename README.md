@@ -1,9 +1,9 @@
-<p align="left"> 
-    <img width="150" height="150" src="streamlit_app/.env_app/Include/assets/img/etude-solvabilite.JPG" align="left"></img>
+<p align="center"> 
+    <img src="streamlit_app/.env_app/Include/assets/img/etude-solvabilite.JPG" align="left"></img>	
 </p>
-<br><br><br><br><br><br><br>
+<br>
 
-# Prédiction de la solvabilité des clients d'une banque
+# Prédiction de la solvabilité des clients d'une banque 🏦
 Les points clés de cette étude se façon suivantes :  
 - Classification des clients en fonction de leur solvabilité
 - Distinction des clients en fonction des risques de crédit
@@ -11,7 +11,7 @@ Les points clés de cette étude se façon suivantes :
 - Amélioration de la stratégie de fidélisation des clients
 - Création d'un modèle de prédiction de remboursement de prêts des clients (fidèles et nouveaux arrivants)
 
-# Objectifs pratiques
+# Objectifs pratiques 🎯
 L’objectif principal ici est de prédire la solvabilité des clients d’une banque. Il s’agira
 donc de distinguer la population de recherche (clients) en fonction du risque de crédit, c’est-à-
 dire de classer les clients solvables et les clients peu fiables.  
@@ -25,7 +25,7 @@ Pour lancer une application streamlit en local, il faudra appliquer les étapes 
 
 
 - Ouvrir un terminal dans l'endroit contenant le script *"Script_projet.py"*  
-- Puis saisir depuis le terminal la commande suivante :
+- Puis saisir depuis le terminal la commande suivante : 
 
 ```python
 streamlit run Scrypt_projet.py
@@ -49,9 +49,9 @@ Voici le schéma du repo :
 |-- README.md
 ```
 
-## Installations et dépendances
-### Démarches à suivre
-Pour constituer notre repo :   
+## Installations et dépendances 🚀
+### Démarches à suivre 📣 :
+Pour constituer notre repo, nous avons suivi les différentes étapes suivantes.
 
 **1**- Nous avons d'abord definie notre architechture de repo dont nous avons besoin comme le montre le schéma ci-dessus.
 
@@ -72,11 +72,11 @@ Donc le fait d'ajouter dans le gitignore ce bout de code précédent permet de p
 
 **5**- Activez l'environnement virtuel en utilisant la commande appropriée selon votre système d'exploitation.
 
-**(Windows)** : 
+**Windows** (💻):   
 ```.\.venv\Scripts\activate```  pour activer l'environnement windows.  
 ```.\.venv\Scripts\Deactivate```  pour désactiver.  
 
-**(Mac)** :  
+**Mac** (💻):  
 ```source .\venv_mac\bin\activate``` et pour activer l'environnement.   
 ```source .\venv_mac\bin\deactivate``` pour désactiver l'environnement.
 
