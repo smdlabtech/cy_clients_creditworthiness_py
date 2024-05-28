@@ -1,8 +1,3 @@
-<p align="left"> 
-    <img src="img/etude-solvabilite.jpg" align="left"></img>	
-</p>
-<br>
-
 # Prédiction de la solvabilité des clients d'une banque 🏦
 Les points clés de cette étude se façon suivantes :  
 - Classification des clients en fonction de leur solvabilité
