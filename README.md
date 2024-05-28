@@ -1,5 +1,5 @@
-<p align="center"> 
-    <img src="img/etude-solvabilite.JPG" align="center"></img>	
+<p align="left"> 
+    <img src="img/etude-solvabilite.JPG" align="left"></img>	
 </p>
 <br>
 
