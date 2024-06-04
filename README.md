@@ -96,5 +96,11 @@ pip install pipreqs
 Ensuite :  
 ```javascript copy 
 pip install -r requirements.txt
-```  
+```
+
+### Conseils : 
+Avant de faire chaque ***commit***, pensez à éxécuter la commande suivante pour mettre à jour la documentation des fonctions ```dev_documentations.md``` : 
+```javascript copy
+python dev_generate_docs.py
+```
 
