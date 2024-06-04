@@ -10,5 +10,6 @@ Les points clés de cette étude se façon suivantes :
 L’objectif principal ici est de prédire la solvabilité des clients d’une banque. Il s’agira
 donc de distinguer la population de recherche (clients) en fonction du risque de crédit, c’est-à-
 dire de classer les clients solvables et les clients peu fiables.  
+  
 Il faudra développer un score de risque à attribuer aux nouveaux clients et aux demandeurs de prêt, ce qui permettra
 à la banque de leur octroyer des prêts sur la base de leurs ***scores*** et des ***ressources*** disponibles de la banque.
