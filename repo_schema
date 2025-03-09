@@ -1,0 +1,15 @@
+## 📂 Repository Structure
+
+```bash
+📦 cy_clients_creditworthiness_py
+ ┣ 📂 archives
+ ┣ 📂 data
+ ┣ 📂 jupyter_notebooks
+ ┣ 📜 .DS_Store
+ ┣ 📜 LICENSE
+ ┣ 📜 Projet_Pyhton.pdf
+ ┣ 📜 README.md                   # Documentation générale du projet
+ ┣ 📜 Scrypt_projet with docs tring.py # Script Python principal avec la documentation intégrée
+ ┣ 📜 dev_documentations.md       # Documentation pour les développeurs
+ ┣ 📜 dev_generate_docs.py        # Script pour générer la documentation
+```
