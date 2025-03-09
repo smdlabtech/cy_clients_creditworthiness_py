@@ -1,3 +1,4 @@
+![GitHub](https://img.shields.io/github/stars/your-repo?style=social)
 # [🏦 Prédiction de la solvabilité des clients d'une banque](https://github.com/smdlabtech/cy_clients_creditworthiness_py/tree/main)
 Les points clés de cette étude se façon suivantes :  
 - Classification des clients en fonction de leur solvabilité
