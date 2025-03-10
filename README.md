@@ -1,10 +1,10 @@
+# [🏦 Prédiction de la solvabilité des clients d'une banque](https://github.com/smdlabtech/cy_clients_creditworthiness_py/tree/main)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)
 ![Pandas](https://img.shields.io/badge/Pandas-Data%20Processing-orange?logo=pandas)
 ![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-ML%20Modeling-yellow?logo=scikit-learn)
 ![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-red?logo=jupyter)
 ![Data Science](https://img.shields.io/badge/Data%20Science-Machine%20Learning-success?logo=databricks)
 
-# [🏦 Prédiction de la solvabilité des clients d'une banque](https://github.com/smdlabtech/cy_clients_creditworthiness_py/tree/main)
 Les points clés de cette étude se façon suivantes :  
 - Classification des clients en fonction de leur solvabilité
 - Distinction des clients en fonction des risques de crédit
